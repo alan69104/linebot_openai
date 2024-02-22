@@ -19,11 +19,11 @@ import traceback
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # Channel Access Token
-line_bot_api = LineBotApi(os.getenv('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc581psOLe+b/J7Iu7qCIrJDPFypvefXy+D4udYFHl9OSYoSXFIEkJmKpjhHPBk3UQP5Kqk37isFkfytaPpgoWh3o0mQwrS5wvQdB04t89/1O/w1cDnyilFU='))
+line_bot_api = LineBotApi(os.getenv("CHANNEL_ACCESS_TOCKEN"))
 # Channel Secret
-handler = WebhookHandler(os.getenv('046d3499ea137d0ac4192b9224c91899'))
+handler = WebhookHandler(os.getenv('CHANNEL_SCRECT'))
 # OPENAI API Key初始化設定
-openai.api_key = os.getenv('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')
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 
 def GPT_response(text):
