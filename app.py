@@ -1,5 +1,7 @@
 from flask import Flask, request, abort
 
+import re
+
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -15,7 +17,7 @@ line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc
 # 必須放上自己的Channel Secret
 handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
-line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='你可以開始了'))
+line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -42,8 +44,14 @@ def callback():
 ##### 基本上程式編輯都在這個function #####
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token,message)
+    message = text=event.message.text
+    if re.match("猜猜我是誰", message):
+        line_bot_api.reply_message(event.reply_token,TexSendtMessage("我是煒仔啦"))
+    elif re.match("超派", message):
+        sticker_message = StickerSendMessage(package_id="789", sticker_id="10885")
+        line_bot_api.reply_message(event.reply_token,sticker_message)
+    else:
+        line_bot_api.reply_message(event.reply_token,TexSendtMessage(message))
 
 #主程式
 import os
