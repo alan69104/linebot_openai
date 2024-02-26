@@ -46,12 +46,13 @@ def callback():
 def handle_message(event):
     message = text=event.message.text
     if re.match("猜猜我是誰", message):
-        line_bot_api.reply_message(event.reply_token,TexSendtMessage("我是煒仔啦"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="我是煒仔啦"))
     elif re.match("超派", message):
         sticker_message = StickerSendMessage(package_id="789", sticker_id="10885")
         line_bot_api.reply_message(event.reply_token,sticker_message)
     else:
-        line_bot_api.reply_message(event.reply_token,TexSendtMessage(message))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=message))
+
 
 #主程式
 import os
