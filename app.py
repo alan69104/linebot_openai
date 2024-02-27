@@ -43,8 +43,15 @@ def callback():
         abort(400)
 
     return 'OK'
-image_list = ["https://imgur.com/2l9Yqh3", 
-              "https://imgur.com/TSyfpYs", 
+image_list = ["https://i.imgur.com/177pDtF.jpg", 
+              "https://i.imgur.com/2l9Yqh3.jpg", 
+              "https://i.imgur.com/TSyfpYs.jpg", 
+              "https://i.imgur.com/66ftEP6.jpg", 
+              "https://i.imgur.com/4Vtlqiv.jpg", 
+              "https://i.imgur.com/hMwDeeK.jpg", 
+              "https://i.imgur.com/iRcUmSa.jpg", 
+              "https://i.imgur.com/QiGu16R.jpg", 
+              "https://i.imgur.com/dL38GmS.jpg"
               ]
 
 def dcard():
