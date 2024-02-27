@@ -143,7 +143,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="唐董滾"))
     elif re.match("抽", message):
         image_message = ImageSendMessage(original_content_url=random.choice(image_list))
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=image_message))
+        line_bot_api.reply_message(event.reply_token, image_message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="哈哈哈"))
 
