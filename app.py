@@ -140,7 +140,7 @@ def ptt(index):
         else:
             date = "無"
         
-        response += f"標題: {title} 人氣: {popular} 日期:{date}\n"
+        response += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
     
     return response
 
@@ -165,13 +165,16 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="小歐滾"))
     elif re.match("唐董", message):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="唐董滾"))
+    elif re.match("一哥", message):
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="邏輯思考 x 有一說一"))
     elif re.match("抽", message):
         img_url = random.choice(image_list)
         image_message = ImageSendMessage(original_content_url= img_url, 
                                          preview_image_url= img_url)
         line_bot_api.reply_message(event.reply_token, image_message)
-    else:
+    elif re.match("哈", message):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="哈哈哈"))
+    
 
 
 #主程式
