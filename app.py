@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import re
+import random
 from flask import Flask, request, abort
 from linebot import (
     LineBotApi, WebhookHandler
@@ -42,6 +43,9 @@ def callback():
         abort(400)
 
     return 'OK'
+image_list = ["https://imgur.com/2l9Yqh3", 
+              "https://imgur.com/TSyfpYs", 
+              ]
 
 def dcard():
     path = "C:/Users/alan6/Downloads/edgedriver_win64/msedgedriver.exe"
@@ -130,6 +134,9 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="小歐滾"))
     elif re.match("唐董", message):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="唐董滾"))
+    elif re.match("抽", message):
+        image_message = ImageSendMessage(original_content_url=random.choice(image_list))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=image_message))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="哈哈哈"))
 
