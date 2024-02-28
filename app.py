@@ -43,6 +43,20 @@ def callback():
         abort(400)
 
     return 'OK'
+
+keyword_responses = {"你是誰": "我是煒仔啦",
+                    "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
+                    "小歐": "小歐滾",
+                    "唐董": "唐董滾",
+                    "一哥": "邏輯思考 x 有一說一",
+                    "哈": "哈哈哈",
+                    "煒仔": "我是佑哥啦",
+                    "佑哥": {"text": "領域展開", "image_url": "https://i.imgur.com/SLlr25K.jpg"},
+                    "一哥升級完成": "強勢回歸",
+                    "仇": "不要以為我們台灣人都是客客氣氣的",
+                    "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg")
+                    }
+
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
               'https://i.imgur.com/c0foSQj.jpeg', 'https://i.imgur.com/BLYnTMq.jpeg', 
               'https://i.imgur.com/9Ykkrxc.jpeg', 'https://i.imgur.com/sdPGFB7.jpeg', 
@@ -75,7 +89,34 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/MaNqDAM.jpg', 'https://i.imgur.com/dqPpa7R.jpg', 
               'https://i.imgur.com/qoeNHjg.jpg', 'https://i.imgur.com/IIqJ2Ys.jpg', 
               'https://i.meee.com.tw/P0PZ6gy.gif', 'https://i.meee.com.tw/BUdbzY5.gif', 
-              'https://i.meee.com.tw/IDr863V.gif', 'https://i.meee.com.tw/S5P0Osl.gif'
+              'https://i.meee.com.tw/IDr863V.gif', 'https://i.meee.com.tw/S5P0Osl.gif',
+              'https://imgur.com/z1Oeta8.jpg', 'https://imgur.com/YdK8sWG.jpg', 
+              'https://imgur.com/RYJ40Ws.jpg', 'https://i.imgur.com/JJJqfGh.jpg', 
+              'https://i.imgur.com/Vq6V5uw.jpg', 'https://i.imgur.com/9Gm2Lum.jpg', 
+              'https://i.imgur.com/NP7smTX.jpg', 'https://i.imgur.com/hhWsDwx.jpg', 
+              'https://i.imgur.com/MGZxm2c.jpg', 'https://i.imgur.com/Kn5gT6H.jpg', 
+              'https://i.imgur.com/VhMOsf1.jpg', 'https://i.imgur.com/PBGFHtB.jpg', 
+              'https://i.imgur.com/dWrOY2r.jpg', 'https://i.meee.com.tw/ayiRKl2.gif', 
+              'https://i.meee.com.tw/azaDSgF.gif', 'https://i.meee.com.tw/hhQXiSF.gif', 
+              'https://i.imgur.com/96oEPLz.jpg', 'https://i.imgur.com/JnyG2yx.jpg', 
+              'https://i.imgur.com/LyqFK18.jpg', 'https://i.imgur.com/IOqbshu.jpg', 
+              'https://i.imgur.com/VEi91HZ.jpg', 'https://i.imgur.com/KV9j1iM.jpg', 
+              'https://i.imgur.com/VQD9dIe.jpg', 'https://i.imgur.com/xk7EtQr.jpg', 
+              'https://i.imgur.com/f4y4pAH.jpg', 'https://i.imgur.com/2cv0lwt.jpg', 
+              'https://i.imgur.com/hgpumwT.jpg', 'https://i.imgur.com/wshZr9G.jpg', 
+              'https://i.imgur.com/msN9wvx.jpg', 'https://i.imgur.com/BE6V2lc.jpg', 
+              'https://i.imgur.com/000FxCe.jpg', 'https://i.imgur.com/0O4XrC9.jpg', 
+              'https://i.imgur.com/dZMFnyu.jpg', 'https://i.imgur.com/29WviyT.jpg', 
+              'https://i.imgur.com/SA5bDCk.jpg', 'https://i.imgur.com/f15Ny7E.jpg', 
+              'https://i.imgur.com/MeAvN83.jpg', 'https://i.imgur.com/c11UTEX.jpg', 
+              'https://i.imgur.com/IYzbbul.jpg', 'https://i.imgur.com/aMNcBUJ.jpg', 
+              'https://i.imgur.com/szwGi3A.jpg', 'https://i.imgur.com/zqr26Xj.jpg', 
+              'https://i.imgur.com/Ac3gO5A.jpg', 'https://i.imgur.com/rXMLFrr.jpg', 
+              'https://i.imgur.com/njZ9AQs.jpg', 'https://i.imgur.com/XLfQXwp.jpg', 
+              'https://i.imgur.com/ExflRIM.jpg', 'https://i.imgur.com/S7l3XpY.jpg', 
+              'https://i.imgur.com/ihyFDFg.jpg', 'https://i.imgur.com/ThHUogR.jpg', 
+              'https://i.imgur.com/UB91Yhe.jpg', 'https://i.imgur.com/S3ToJ5B.jpg',
+              'https://i.imgur.com/WsdyOOf.jpg'
               ]
 
 def dcard():
@@ -149,32 +190,21 @@ def ptt(index):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text
-    if re.match("你是誰", message):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="我是煒仔啦"))
-    elif re.match("超派", message):
-        sticker_message = StickerSendMessage(package_id="789", sticker_id="10885")
-        line_bot_api.reply_message(event.reply_token, sticker_message)
-    elif re.match("ptt (.*)", message):
-        index = re.match("ptt (.*)", message).group(1)
-        response = ptt(index)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response))
-    elif re.match("dcard", message):
-        response = dcard()
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response))
-    elif re.match("小歐", message):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="小歐滾"))
-    elif re.match("唐董", message):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="唐董滾"))
-    elif re.match("一哥", message):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="邏輯思考 x 有一說一"))
-    elif re.match("抽", message):
-        img_url = random.choice(image_list)
-        image_message = ImageSendMessage(original_content_url= img_url, 
-                                         preview_image_url= img_url)
-        line_bot_api.reply_message(event.reply_token, image_message)
-    elif re.match("哈", message):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="哈哈哈"))
-    
+    response = ""
+    for keyword, reply in keyword_responses.items():
+        if re.match(keyword, message):
+            response = reply
+            break
+    if not response:
+        if re.match("抽", message):
+            img_url = random.choice(image_list)
+            response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
+        elif re.match("dcard", message):
+            response = dcard()
+        elif re.match("ptt (.*)", message):
+            index = re.match("ptt (.*)", message).group(1)
+            response = ptt(index)
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response))
 
 
 #主程式
