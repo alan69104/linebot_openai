@@ -51,7 +51,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "一哥": "邏輯思考 x 有一說一",
                     "哈": "哈哈哈",
                     "煒仔": "我是佑哥啦",
-                    "一哥升級完成": "強勢回歸",
+                    "升級完成": "強勢回歸",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg")
                     }
