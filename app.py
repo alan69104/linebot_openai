@@ -208,6 +208,7 @@ def handle_message(event):
             response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
             line_bot_api.reply_message(event.reply_token, response)
             response = TextSendMessage(text="領域展開")
+            line_bot_api.reply_message(event.reply_token, response)
     
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
