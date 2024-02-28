@@ -51,7 +51,6 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "一哥": "邏輯思考 x 有一說一",
                     "哈": "哈哈哈",
                     "煒仔": "我是佑哥啦",
-                    "佑哥": {"text": "領域展開", "image_url": "https://i.imgur.com/SLlr25K.jpg"},
                     "一哥升級完成": "強勢回歸",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg")
@@ -190,7 +189,7 @@ def ptt(index):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text
-    response = ""
+    response = None
     for keyword, reply in keyword_responses.items():
         if re.match(keyword, message):
             response = reply
@@ -204,7 +203,17 @@ def handle_message(event):
         elif re.match("ptt (.*)", message):
             index = re.match("ptt (.*)", message).group(1)
             response = ptt(index)
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=response))
+        elif re.match("佑哥", message):
+            img_url = "https://i.imgur.com/SLlr25K.jpg"
+            response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
+            line_bot_api.reply_message(event.reply_token, response)
+            response = TextSendMessage(text="領域展開")
+    
+    # 如果 response 不是 None，則表示找到了相符的回覆
+    if response:
+        if isinstance(response, str):
+            response = TextSendMessage(text=response)
+        line_bot_api.reply_message(event.reply_token, response)
 
 
 #主程式
