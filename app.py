@@ -15,13 +15,6 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-#
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
-#
-
 app = Flask(__name__)
 
 # 必須放上自己的Channel Access Token
@@ -156,12 +149,19 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/4g44O7m.jpg', 'https://i.imgur.com/AhITdYN.jpg', 
               'https://i.imgur.com/trmLUgY.jpg', 'https://i.imgur.com/m0qIZpz.jpg', 
               'https://i.imgur.com/yfavx2v.jpg', 'https://i.imgur.com/TbWefKA.jpg', 
-              'https://i.imgur.com/kl0BZLt.jpg'
+              'https://i.imgur.com/kl0BZLt.jpg', 'https://i.imgur.com/5utO0D1.jpg', 
+              'https://i.imgur.com/VkW9axn.jpg', 'https://i.imgur.com/SZDSseH.jpg', 
+              'https://i.imgur.com/M4q22RV.jpg', 'https://i.imgur.com/wGmpDVE.jpg', 
+              'https://i.imgur.com/ec8gW5o.jpg', 'https://i.imgur.com/20PKLzL.jpg', 
+              'https://i.imgur.com/H2NB0hq.jpg', 'https://i.imgur.com/04xLAFu.jpg', 
+              'https://i.imgur.com/efNS0ir.jpg', 'https://i.imgur.com/awPma84.jpg',
+              'https://i.imgur.com/qfH5w6c.jpg', 'https://i.imgur.com/hUNoDQB.jpg', 
+              'https://i.imgur.com/beGe9tU.jpg', 'https://i.imgur.com/awPma84.jpg'
               ]
 
 def dcard():
-    path = "${PATH}:/opt/render/project/.render/chrome/opt/google/chrome/"
-    driver = webdriver.Chrome()
+    path = "C:/Users/alan6/Downloads/edgedriver_win64/msedgedriver.exe"
+    driver = webdriver.Edge()
     url = "https://www.dcard.tw/f/utaipei?tab=latest"
     driver.get(url)
     dates = []
