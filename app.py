@@ -20,6 +20,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 service = Service('${PATH}:/opt/render/project/.render/chrome/opt/google/chrome') 
 driver = webdriver.Chrome(service=service)
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--headless")  # 選擇是否以無頭模式運行
+driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)  # 使用 webdriver_manager 安裝的 Chrome WebDriver
 ############################################################################
 
 app = Flask(__name__)
@@ -161,7 +164,7 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
 
 def dcard():
     path = "${PATH}:/opt/render/project/.render/chrome/opt/google/chrome/"
-    driver = webdriver.Edge()
+    driver = webdriver.Chrome()
     url = "https://www.dcard.tw/f/utaipei?tab=latest"
     driver.get(url)
     dates = []
