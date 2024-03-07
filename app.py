@@ -15,6 +15,13 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+############################################################################
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service)
+############################################################################
+
 app = Flask(__name__)
 
 # 必須放上自己的Channel Access Token
@@ -153,7 +160,7 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               ]
 
 def dcard():
-    path = "C:/Users/alan6/Downloads/edgedriver_win64/msedgedriver.exe"
+    path = "${PATH}:/opt/render/project/.render/chrome/opt/google/chrome/"
     driver = webdriver.Edge()
     url = "https://www.dcard.tw/f/utaipei?tab=latest"
     driver.get(url)
