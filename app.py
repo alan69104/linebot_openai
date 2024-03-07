@@ -15,15 +15,12 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-############################################################################
+#
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-service = Service('${PATH}:/opt/render/project/.render/chrome/opt/google/chrome') 
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")  # 選擇是否以無頭模式運行
-driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)  # 使用 webdriver_manager 安裝的 Chrome WebDriver
-############################################################################
+#
 
 app = Flask(__name__)
 
