@@ -3,3 +3,4 @@ flask
 gunicorn
 selenium
 BeautifulSoup4
+webdriver-manager
