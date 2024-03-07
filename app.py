@@ -18,7 +18,7 @@ from linebot.models import *
 ############################################################################
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-service = Service(ChromeDriverManager().install())
+service = Service('${PATH}:/opt/render/project/.render/chrome/opt/google/chrome') 
 driver = webdriver.Chrome(service=service)
 ############################################################################
 
