@@ -197,34 +197,42 @@ def get_driver():
     return driver
 
 def dcard():
-    driver = get_driver()
-    url = "https://www.dcard.tw/f/utaipei?tab=latest"
-    driver.get(url)
-    dates = []
-    titles = []
+    try:
+        driver = get_driver()
+        url = "https://www.dcard.tw/f/utaipei?tab=latest"
+        driver.get(url)
+        dates = []
+        titles = []
 
-    def get_title():
-        title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
-        for a in title_value:
-            titles.append(a.text)
-        return titles
+        def get_title():
+            title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
+            for a in title_value:
+                titles.append(a.text)
+            return titles
 
-    def get_date():
-        time_element = driver.find_elements(By.XPATH, "//time")
-        for times in time_element:
-            datetime = times.get_attribute("datetime")
-            date = datetime.split("T")[0]
-            dates.append(date)
-        return dates
+        def get_date():
+            time_element = driver.find_elements(By.XPATH, "//time")
+            for times in time_element:
+                datetime = times.get_attribute("datetime")
+                date = datetime.split("T")[0]
+                dates.append(date)
+            return dates
 
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl"))
-    )
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl"))
+        )
 
-    dates = get_date()
-    titles = get_title()
+        dates = get_date()
+        titles = get_title()
 
-    response_dcard = ""
+        response_dcard = ""
+
+    except Exception as e:
+        # 記錄錯誤訊息
+        logger.error(e)
+
+        # 回傳空字串
+        return ""
 
     for i in range(len(dates)):
         response_dcard += f"\n{dates[i]} {titles[i]}\n"
