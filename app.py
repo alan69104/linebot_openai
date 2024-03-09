@@ -1,3 +1,5 @@
+import os
+import time
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -24,6 +26,9 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
+@app.route("/")
+def hello():
+    return "Hello World!"
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -45,18 +50,27 @@ def callback():
     return 'OK'
 
 keyword_responses = {"你是誰": "我是煒仔啦",
+                     "有": "有喔",
                     "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
                     "小歐": "小歐滾",
                     "唐董": "唐董滾",
                     "一哥": "邏輯思考 x 有一說一",
                     "哈": "哈哈哈",
                     "煒仔": "我是佑哥啦",
+                    "佑哥": "領域展開",
+                    "車號": "9796-MP",
                     "升級完成": "強勢回歸",
+                    "哇靠": "哇靠!你還真會掰啊",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
+                    "名單": "1姚如庭、2黃正杰、3林幼鎂、4林憶蓁、5王云柔、6沈煒耀、7何續恩、8莊博文、9林坤億、10徐楷茹、11葉宥陞、12何寬祐、13陳皓恩、14蔣承祐、15張宥朋、16謝語姍、17周家甫、18林昀誼、19周子堯、20黃加榕",
+                    "爆車": "收到，那市立大學這邊我就結算11位囉！/n車子應該會滿載。/n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
+
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
                     "垃圾": ImageSendMessage(original_content_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg", preview_image_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg"),
+                    "領域展開": ImageSendMessage(original_content_url="https://i.imgur.com/SLlr25K.jpg", preview_image_url="https://i.imgur.com/SLlr25K.jpg"),
+                    "ㄟ": "ㄟ"
 
                     }
 
@@ -156,12 +170,35 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/H2NB0hq.jpg', 'https://i.imgur.com/04xLAFu.jpg', 
               'https://i.imgur.com/efNS0ir.jpg', 'https://i.imgur.com/awPma84.jpg',
               'https://i.imgur.com/qfH5w6c.jpg', 'https://i.imgur.com/hUNoDQB.jpg', 
-              'https://i.imgur.com/beGe9tU.jpg', 'https://i.imgur.com/awPma84.jpg'
+              'https://i.imgur.com/beGe9tU.jpg', 'https://i.imgur.com/awPma84.jpg',
+              'https://i.imgur.com/dnR76pN.jpg', 'https://i.imgur.com/0aG7she.jpg', 
+              'https://i.imgur.com/empukyF.jpg', 'https://i.imgur.com/2bHyV8z.jpg', 
+              'https://i.imgur.com/MhOjO0o.jpg', 'https://i.imgur.com/85QHHFG.jpg', 
+              'https://i.imgur.com/WeGq0Ix.jpg', 'https://i.imgur.com/ZN4FKra.jpg', 
+              'https://i.imgur.com/4u4NkFj.jpg', 'https://i.imgur.com/UcogiNv.jpg', 
+              'https://i.imgur.com/29PSj4J.jpg', 'https://i.imgur.com/J3Ic1yq.jpg', 
+              'https://i.imgur.com/YfiMjBD.jpg', 'https://i.imgur.com/qUCk6al.jpg', 
+              'https://i.imgur.com/gMEkLLa.jpg', 'https://i.imgur.com/hmyIsck.jpg', 
+              'https://i.imgur.com/IR4F6DC.jpg', 'https://i.imgur.com/5itSd85.jpg', 
+              'https://i.imgur.com/FkwrVDd.jpg', 'https://i.imgur.com/cPin9Ec.jpg', 
+              'https://i.imgur.com/98kvU6d.jpg', 'https://i.imgur.com/nCqHXvi.jpg',
+              'http://i.imgur.com/UVGAWF1.jpg', 'http://i.imgur.com/LIUkUKG.jpg', 
+              'http://i.imgur.com/bYJmiet.jpg', 'http://i.imgur.com/YTi0OkC.jpg', 
+              'http://i.imgur.com/chFlcJt.jpg', 'http://i.imgur.com/Iya6vqH.jpg', 
+              'http://i.imgur.com/9x4xU9j.jpg', 'http://i.imgur.com/6qReuax.jpg', 
+              'http://i.imgur.com/Kw5EXyi.jpg', 'http://i.imgur.com/0eUWBdg.jpg', 
+              'http://i.imgur.com/4qoW7fx.jpg', 'http://i.imgur.com/zatmStI.jpg', 
+              'http://i.imgur.com/rek2f09.jpg', 'https://i.imgur.com/xMWjIq1.jpg'
               ]
 
+def get_driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(options=options)
+    return driver
+
 def dcard():
-    path = "C:/Users/alan6/Downloads/edgedriver_win64/msedgedriver.exe"
-    driver = webdriver.Edge()
+    driver = get_driver()
     url = "https://www.dcard.tw/f/utaipei?tab=latest"
     driver.get(url)
     dates = []
@@ -188,20 +225,20 @@ def dcard():
     dates = get_date()
     titles = get_title()
 
-    response = ""
+    response_dcard = ""
 
     for i in range(len(dates)):
-        response += f"\n{dates[i]} {titles[i]}\n"
+        response_dcard += f"\n{dates[i]} {titles[i]}\n"
 
-    return response
+    return response_dcard
 
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
     headers = {"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
-    response = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response.text, "html.parser")
+    response_ptt = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response_ptt.text, "html.parser")
     article = soup.find_all("div", class_ = "r-ent")
-    response = ""
+    response_ptt = ""
     for a in article:
         title = a.find("div", class_ = "title")
         if title and title.a:
@@ -221,9 +258,9 @@ def ptt(index):
         else:
             date = "無"
         
-        response += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
+        response_ptt += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
     
-    return response
+    return response_ptt
 
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
@@ -244,12 +281,6 @@ def handle_message(event):
         elif re.match("ptt (.*)", message):
             index = re.match("ptt (.*)", message).group(1)
             response = ptt(index)
-        elif re.match("佑哥", message):
-            img_url = "https://i.imgur.com/SLlr25K.jpg"
-            response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
-            line_bot_api.reply_message(event.reply_token, response)
-            response = TextSendMessage(text="領域展開")
-            line_bot_api.reply_message(event.reply_token, response)
     
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
@@ -259,7 +290,6 @@ def handle_message(event):
 
 
 #主程式
-import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
