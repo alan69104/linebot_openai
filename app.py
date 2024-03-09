@@ -1,5 +1,6 @@
 import os
 import time
+import logging
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -18,6 +19,8 @@ from linebot.exceptions import (
 from linebot.models import *
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.ERROR)
+logger = logging.getLogger(__name__)
 
 # 必須放上自己的Channel Access Token
 line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc581psOLe+b/J7Iu7qCIrJDPFypvefXy+D4udYFHl9OSYoSXFIEkJmKpjhHPBk3UQP5Kqk37isFkfytaPpgoWh3o0mQwrS5wvQdB04t89/1O/w1cDnyilFU=')
