@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
-# exit on error
+# 遇到錯誤時終止腳本
 set -o errexit
 
 STORAGE_DIR=/opt/render/project/.render
 
 if [[ ! -d $STORAGE_DIR/chrome ]]; then
-  echo "...Downloading Chrome"
+  echo "正在下載 Chrome..."
   mkdir -p $STORAGE_DIR/chrome
   cd $STORAGE_DIR/chrome
   wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
   rm ./google-chrome-stable_current_amd64.deb
-  cd $HOME/project/src # Make sure we return to where we were
+  cd $HOME/project/src # 確保我們返回到原本的位置
+  echo "Chrome 安裝完成。"
 else
-  echo "...Using Chrome from cache"
+  echo "從快取中使用 Chrome。"
 fi
 
-# be sure to add Chromes location to the PATH as part of your Start Command
-# export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
+# 確保將 Chrome 的位置添加到啟動命令的 PATH 中
+export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome/";
 
-# add your own build commands...
+# 在此添加您自己的構建命令...
