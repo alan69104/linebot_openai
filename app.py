@@ -62,8 +62,9 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "升級完成": "強勢回歸",
                     "哇靠": "哇靠!你還真會掰啊",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
+                    "恐龍咖啡廳":"正杰，坤憶 你們在今日11：00-11：20 可到臺博古生館的恐龍餐廳找老師喝杯飲料，逾時失效~",
                     "名單": "1姚如庭、2黃正杰、3林幼鎂、4林憶蓁、5王云柔、6沈煒耀、7何續恩、8莊博文、9林坤億、10徐楷茹、11葉宥陞、12何寬祐、13陳皓恩、14蔣承祐、15張宥朋、16謝語姍、17周家甫、18林昀誼、19周子堯、20黃加榕",
-                    "爆車": "收到，那市立大學這邊我就結算11位囉！/n車子應該會滿載。/n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
+                    "爆車": "收到，那市立大學這邊我就結算11位囉！\n車子應該會滿載。\n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
 
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
@@ -192,9 +193,7 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               ]
 
 def get_driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
     return driver
 
 def dcard():
@@ -234,33 +233,37 @@ def dcard():
 
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
-    headers = {"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
     response_ptt = requests.get(url, headers=headers)
-    soup = BeautifulSoup(response_ptt.text, "html.parser")
-    article = soup.find_all("div", class_ = "r-ent")
-    response_ptt = ""
-    for a in article:
-        title = a.find("div", class_ = "title")
-        if title and title.a:
-            title = title.a.text
-        else:
-            title = "找不到"
+    if response_ptt.status_code == 200:
+        soup = BeautifulSoup(response_ptt.text, "html.parser")
+        article = soup.find_all("div", class_="r-ent")
+        response_ptt = ""
+        for a in article:
+            title = a.find("div", class_="title")
+            if title and title.a:
+                title = title.a.text.strip()  # Strip whitespace
+            else:
+                title = "找不到"
 
-        popular = a.find("div", class_ = "nrec")
-        if popular and popular.span:
-            popular = popular.span.text
-        else:
-            popular = "無"
+            popular = a.find("div", class_="nrec")
+            if popular and popular.span:
+                popular = popular.span.text.strip()  # Strip whitespace
+            else:
+                popular = "無"
 
-        date = a.find("div", class_ = "date")
-        if date:
-            date = date.text
-        else:
-            date = "無"
-        
-        response_ptt += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
-    
-    return response_ptt
+            date = a.find("div", class_="date")
+            if date:
+                date = date.text.strip()  # Strip whitespace
+            else:
+                date = "無"
+
+            response_ptt += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
+
+        return response_ptt
+    else:
+        return "無法取得 PTT 文章"
+
 
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
