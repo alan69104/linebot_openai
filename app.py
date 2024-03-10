@@ -218,57 +218,77 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
 def get_driver():
     driver = webdriver.Chrome()
     return driver
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+    chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
 
-def dcard():
-    try:
-        # Set up Chrome options
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")  # Run in headless mode
-        chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-        chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-        chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
+    # Set the path for ChromeDriver
+    chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
 
-        # Set the path for ChromeDriver
-        chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
+    # Initialize the Chrome WebDriver service with the ChromeDriver path
+    chrome_service = Service(chromedriver_path)
 
-        # Initialize the Chrome WebDriver service with the ChromeDriver path
-        chrome_service = Service(chromedriver_path)
+    # Initialize the Chrome WebDriver with the specified options and service
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    
+    # Navigate to Google and get the page title
+    driver.get("https://www.dcard.tw/f/utaipei?tab=latest")
+    page_title = driver.title
+    driver.quit()
 
-        # Initialize the Chrome WebDriver with the specified options and service
-        driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    return f"網頁標題: {page_title}"
+# def dcard():
+#     try:
+#         # Set up Chrome options
+#         chrome_options = Options()
+#         chrome_options.add_argument("--headless")  # Run in headless mode
+#         chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+#         chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+#         chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
 
-        url = "https://www.dcard.tw/f/utaipei?tab=latest"
-        driver.get(url)
-        dates = []
-        titles = []
+#         # Set the path for ChromeDriver
+#         chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
 
-        def get_title():
-            title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
-            for a in title_value:
-                titles.append(a.text)
-            return titles
+#         # Initialize the Chrome WebDriver service with the ChromeDriver path
+#         chrome_service = Service(chromedriver_path)
 
-        def get_date():
-            time_element = driver.find_elements(By.XPATH, "//time")
-            for times in time_element:
-                datetime = times.get_attribute("datetime")
-                date = datetime.split("T")[0]
-                dates.append(date)
-            return dates
+#         # Initialize the Chrome WebDriver with the specified options and service
+#         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-        WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl")))
-        dates = get_date()
-        titles = get_title()
-        driver.quit()
+#         url = "https://www.dcard.tw/f/utaipei?tab=latest"
+#         driver.get(url)
+#         dates = []
+#         titles = []
 
-        response_dcard = ""
-        for i in range(len(dates)):
-            response_dcard += f"\n{dates[i]} {titles[i]}\n"
+#         def get_title():
+#             title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
+#             for a in title_value:
+#                 titles.append(a.text)
+#             return titles
 
-        return response_dcard
-    except Exception as e:
-        logger.error(e)
-        return ""
+#         def get_date():
+#             time_element = driver.find_elements(By.XPATH, "//time")
+#             for times in time_element:
+#                 datetime = times.get_attribute("datetime")
+#                 date = datetime.split("T")[0]
+#                 dates.append(date)
+#             return dates
+
+#         WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl")))
+#         dates = get_date()
+#         titles = get_title()
+#         driver.quit()
+
+#         response_dcard = ""
+#         for i in range(len(dates)):
+#             response_dcard += f"\n{dates[i]} {titles[i]}\n"
+
+#         return response_dcard
+#     except Exception as e:
+#         logger.error(e)
+#         return ""
     
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
