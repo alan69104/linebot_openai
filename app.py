@@ -29,6 +29,24 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
+def get_driver():
+    # Set up Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Run in headless mode
+    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
+    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
+    chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
+
+    # Set the path for ChromeDriver
+    chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
+
+    # Initialize the Chrome WebDriver service with the ChromeDriver path
+    chrome_service = Service(chromedriver_path)
+
+    # Initialize the Chrome WebDriver with the specified options and service
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    return driver
+
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -221,27 +239,20 @@ def dcard():
                 dates.append(date)
             return dates
 
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl"))
-        )
-
+        WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl")))
         dates = get_date()
         titles = get_title()
 
         response_dcard = ""
-
     except Exception as e:
-        # 記錄錯誤訊息
         logger.error(e)
-
-        # 回傳空字串
         return ""
 
     for i in range(len(dates)):
         response_dcard += f"\n{dates[i]} {titles[i]}\n"
 
     return response_dcard
-
+    
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
