@@ -31,7 +31,7 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
-def get_driver():
+def dcard():
     # Set up Chrome options
     chrome_options = Options()
     chrome_options.add_argument("--headless")  # Run in headless mode
