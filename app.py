@@ -202,7 +202,7 @@ def get_driver():
     return driver
 
 @app.route('/')
-def index():
+def dcard():
     # 在請求處理函數內部使用 WebDriver
     driver = get_driver()
     driver.get("https://www.dcard.tw/f")
