@@ -30,25 +30,6 @@ line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc
 handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
-
-def dcard():
-    # Set up Chrome options
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
-    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-    chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
-
-    # Set the path for ChromeDriver
-    chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
-
-    # Initialize the Chrome WebDriver service with the ChromeDriver path
-    chrome_service = Service(chromedriver_path)
-
-    # Initialize the Chrome WebDriver with the specified options and service
-    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-    return driver
-
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -216,29 +197,19 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               ]
 
 def get_driver():
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    driver = webdriver.Chrome(options=options)
     return driver
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Run in headless mode
-    chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-    chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-    chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
 
-    # Set the path for ChromeDriver
-    chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
-
-    # Initialize the Chrome WebDriver service with the ChromeDriver path
-    chrome_service = Service(chromedriver_path)
-
-    # Initialize the Chrome WebDriver with the specified options and service
-    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-    
-    # Navigate to Google and get the page title
-    driver.get("https://www.dcard.tw/f/utaipei?tab=latest")
-    page_title = driver.title
+@app.route('/')
+def index():
+    # 在請求處理函數內部使用 WebDriver
+    driver = get_driver()
+    driver.get("https://www.dcard.tw/f")
+    time.sleep(5)
+    title = driver.title  # 取得網頁標題
     driver.quit()
-
-    return f"網頁標題: {page_title}"
+    return title
 # def dcard():
 #     try:
 #         # Set up Chrome options
