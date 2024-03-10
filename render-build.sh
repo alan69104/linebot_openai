@@ -1,23 +1,38 @@
 #!/usr/bin/env bash
-# 遇到錯誤時終止腳本
+
+# exit on error
 set -o errexit
 
 STORAGE_DIR=/opt/render/project/.render
 
 if [[ ! -d $STORAGE_DIR/chrome ]]; then
-  echo "正在下載 Chrome..."
-  mkdir -p $STORAGE_DIR/chrome
-  cd $STORAGE_DIR/chrome
-  wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
-  rm ./google-chrome-stable_current_amd64.deb
-  cd $HOME/project/src # 確保我們返回到原本的位置
-  echo "Chrome 安裝完成。"
+    echo "...Downloading Chrome"
+    mkdir -p $STORAGE_DIR/chrome
+    cd $STORAGE_DIR/chrome
+    wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
+    rm ./google-chrome-stable_current_amd64.deb
+    cd $HOME/project/src # Make sure we return to where we were
 else
-  echo "從快取中使用 Chrome。"
+    echo "...Using Chrome from cache"
 fi
 
-# 確保將 Chrome 的位置添加到啟動命令的 PATH 中
-export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome/";
+# Download and install ChromeDriver
+if [[ ! -f $STORAGE_DIR/chromedriver ]]; then
+    echo "...Downloading ChromeDriver"
+    wget -P $STORAGE_DIR https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.111/linux64/chromedriver-linux64.zip
+    unzip -o $STORAGE_DIR/chromedriver-linux64.zip -d $STORAGE_DIR
+    rm $STORAGE_DIR/chromedriver-linux64.zip
+else
+    echo "...Using ChromeDriver from cache"
+fi
 
-# 在此添加您自己的構建命令...
+# be sure to add Chromes location to the PATH as part of your Start Command
+export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
+export PATH="${PATH}:/opt/render/project/.render/chromedriver-linux64"
+
+/opt/render/project/.render/chrome/opt/google/chrome/chrome --version
+/opt/render/project/.render/chromedriver-linux64/chromedriver --version
+
+# add your own build commands...
+# add your own build commands...
