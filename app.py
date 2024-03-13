@@ -332,7 +332,7 @@ def handle_message(event):
             response = ptt(index)
         elif re.match("星光閃耀", message):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
-            response = VideoMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
+            response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
     
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
