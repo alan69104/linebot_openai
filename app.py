@@ -6,8 +6,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 import re
 import random
@@ -30,6 +28,7 @@ line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc
 handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
+
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -54,8 +53,10 @@ def callback():
     return 'OK'
 
 keyword_responses = {"你是誰": "我是煒仔啦",
-                     "有": "有喔",
-                    "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
+                    "ㄟ": "ㄟ",
+                    "有": "有喔",
+                    "豪巴": "豪巴",
+                    "小炮": "小炮",
                     "小歐": "小歐滾",
                     "唐董": "唐董滾",
                     "一哥": "邏輯思考 x 有一說一",
@@ -69,14 +70,19 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "恐龍咖啡廳":"正杰，坤憶 你們在今日11：00-11：20 可到臺博古生館的恐龍餐廳找老師喝杯飲料，逾時失效~",
                     "名單": "1姚如庭、2黃正杰、3林幼鎂、4林憶蓁、5王云柔、6沈煒耀、7何續恩、8莊博文、9林坤億、10徐楷茹、11葉宥陞、12何寬祐、13陳皓恩、14蔣承祐、15張宥朋、16謝語姍、17周家甫、18林昀誼、19周子堯、20黃加榕",
                     "爆車": "收到，那市立大學這邊我就結算11位囉！\n車子應該會滿載。\n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
-
+                    
+                    "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
                     "垃圾": ImageSendMessage(original_content_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg", preview_image_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg"),
                     "領域展開": ImageSendMessage(original_content_url="https://i.imgur.com/SLlr25K.jpg", preview_image_url="https://i.imgur.com/SLlr25K.jpg"),
-                    "ㄟ": "ㄟ"
-
+                    "天母校區": ImageSendMessage(original_content_url="https://i.imgur.com/8eYOH6K.jpg", preview_image_url="https://i.imgur.com/8eYOH6K.jpg"),
+                    "黨徽": ImageSendMessage(original_content_url="https://i.imgur.com/1ay9q9f.jpg", preview_image_url="https://i.imgur.com/1ay9q9f.jpg"),
+                    "科學館": ImageSendMessage(original_content_url="https://i.imgur.com/NHZ3Clo.jpg", preview_image_url="https://i.imgur.com/NHZ3Clo.jpg"),
+                    "收回": ImageSendMessage(original_content_url="https://i.imgur.com/khAtzmm.jpg", preview_image_url="https://i.imgur.com/khAtzmm.jpg"),
+                    "勤樸樓B1": ImageSendMessage(original_content_url="https://i.imgur.com/CsefOc1.jpg", preview_image_url="https://i.imgur.com/CsefOc1.jpg"),
+                    "對": ImageSendMessage(original_content_url="https://i.imgur.com/oXPGnE2.jpg", preview_image_url="https://i.imgur.com/oXPGnE2.jpg"),
                     }
 
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
@@ -193,74 +199,84 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'http://i.imgur.com/9x4xU9j.jpg', 'http://i.imgur.com/6qReuax.jpg', 
               'http://i.imgur.com/Kw5EXyi.jpg', 'http://i.imgur.com/0eUWBdg.jpg', 
               'http://i.imgur.com/4qoW7fx.jpg', 'http://i.imgur.com/zatmStI.jpg', 
-              'http://i.imgur.com/rek2f09.jpg', 'https://i.imgur.com/xMWjIq1.jpg'
+              'http://i.imgur.com/rek2f09.jpg', 'https://i.imgur.com/xMWjIq1.jpg',
+              'https://i.imgur.com/hHLSzhC.jpg', 'https://i.imgur.com/8akbfEw.jpg', 
+              'https://i.imgur.com/tGCRUms.jpg', 'https://i.imgur.com/O163ih5.jpg', 
+              'https://i.imgur.com/wTFsIJt.jpg', 'https://i.imgur.com/MiDrAYI.jpg', 
+              'https://i.imgur.com/OolY4LT.jpg', 'https://i.imgur.com/Dz1KpDD.jpg',
+              'https://i.imgur.com/tvgxjKa.jpg', 'https://i.imgur.com/EBK1CtE.jpg', 
+              'https://i.imgur.com/c3xDxwR.jpg', 'https://i.imgur.com/3rD3pQB.jpg', 
+              'https://i.imgur.com/XF4b0Xd.jpg', 'https://i.imgur.com/7ZjamvH.jpg', 
+              'https://i.imgur.com/VTPdxkJ.jpg', 'https://i.imgur.com/YDF4v0K.jpg', 
+              'https://i.imgur.com/zTtNXKz.jpg', 'https://i.imgur.com/Rag74Kg.jpg', 
+              'https://i.imgur.com/ugflsmp.jpg', 'https://i.imgur.com/hICwsEm.jpg', 
+              'https://i.imgur.com/9eDstiV.jpg', 'https://i.imgur.com/U6AU0lf.jpg', 
+              'https://i.imgur.com/9gfWhVU.jpg', 'https://i.imgur.com/daTfcBh.jpg', 
+              'https://i.imgur.com/EYAjAiZ.jpg', 'https://i.imgur.com/WwU2ZKd.jpg', 
+              'https://i.imgur.com/tC1Zwub.jpg', 'https://i.imgur.com/5jEWVam.jpg', 
+              'https://i.imgur.com/rlZTVKe.jpg', 'https://i.imgur.com/TxlZLga.jpg', 
+              'https://i.imgur.com/WY1AIzp.jpg', 'https://i.imgur.com/c3JgjSe.jpg', 
+              'https://i.imgur.com/ENsY9cS.jpg', 'https://i.imgur.com/RCMolNL.jpg', 
+              'https://i.imgur.com/uLDC0hX.jpg', 'https://i.imgur.com/yDsns2f.jpg', 
+              'https://i.imgur.com/clWsnaZ.jpg', 'https://i.imgur.com/tJM8L2Z.jpg', 
+              'https://i.imgur.com/arAA4kS.jpg', 'https://i.imgur.com/zjrS6Hh.jpg', 
+              'https://i.imgur.com/2T6GCn7.jpg', 'https://i.imgur.com/JRmZxdF.jpg', 
+              'https://i.imgur.com/RmFVtYU.jpg', 'https://i.imgur.com/iaUXE6j.jpg', 
+              'https://i.imgur.com/ljnGciM.jpg', 'http://i.imgur.com/bIz9jSP.jpg', 
+              'http://i.imgur.com/04nOqbR.jpg', 'http://i.imgur.com/ekejiR0.jpg', 
+              'http://i.imgur.com/X4WOJ6O.jpg', 'http://i.imgur.com/mV7PxUS.jpg', 
+              'http://i.imgur.com/0WKY4bc.jpg', 'http://i.imgur.com/RkKDifG.jpg', 
+              'http://i.imgur.com/0KtmjJ5.jpg', 'http://i.imgur.com/zRDF38z.jpg', 
+              'http://i.imgur.com/zgm2Q5X.jpg'
               ]
 
 def get_driver():
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome()
     return driver
 
-@app.route('/')
 def dcard():
-    # 在請求處理函數內部使用 WebDriver
-    driver = get_driver()
-    driver.get("https://www.dcard.tw/f")
-    time.sleep(5)
-    title = driver.title  # 取得網頁標題
-    driver.quit()
-    return title
-# def dcard():
-#     try:
-#         # Set up Chrome options
-#         chrome_options = Options()
-#         chrome_options.add_argument("--headless")  # Run in headless mode
-#         chrome_options.add_argument("--disable-gpu")  # Disable GPU acceleration
-#         chrome_options.add_argument("--no-sandbox")  # Bypass OS security model
-#         chrome_options.binary_location = "/opt/render/project/.render/chrome/opt/google/chrome/chrome"  # Specify Chrome binary location
+    try:
+        driver = get_driver()
+        url = "https://www.dcard.tw/f/utaipei?tab=latest"
+        driver.get(url)
+        dates = []
+        titles = []
 
-#         # Set the path for ChromeDriver
-#         chromedriver_path = '/opt/render/project/.render/chromedriver-linux64/chromedriver'
+        def get_title():
+            title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
+            for a in title_value:
+                titles.append(a.text)
+            return titles
 
-#         # Initialize the Chrome WebDriver service with the ChromeDriver path
-#         chrome_service = Service(chromedriver_path)
+        def get_date():
+            time_element = driver.find_elements(By.XPATH, "//time")
+            for times in time_element:
+                datetime = times.get_attribute("datetime")
+                date = datetime.split("T")[0]
+                dates.append(date)
+            return dates
 
-#         # Initialize the Chrome WebDriver with the specified options and service
-#         driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl"))
+        )
 
-#         url = "https://www.dcard.tw/f/utaipei?tab=latest"
-#         driver.get(url)
-#         dates = []
-#         titles = []
+        dates = get_date()
+        titles = get_title()
 
-#         def get_title():
-#             title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
-#             for a in title_value:
-#                 titles.append(a.text)
-#             return titles
+        response_dcard = ""
 
-#         def get_date():
-#             time_element = driver.find_elements(By.XPATH, "//time")
-#             for times in time_element:
-#                 datetime = times.get_attribute("datetime")
-#                 date = datetime.split("T")[0]
-#                 dates.append(date)
-#             return dates
+    except Exception as e:
+        # 記錄錯誤訊息
+        logger.error(e)
 
-#         WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl")))
-#         dates = get_date()
-#         titles = get_title()
-#         driver.quit()
+        # 回傳空字串
+        return ""
 
-#         response_dcard = ""
-#         for i in range(len(dates)):
-#             response_dcard += f"\n{dates[i]} {titles[i]}\n"
+    for i in range(len(dates)):
+        response_dcard += f"\n{dates[i]} {titles[i]}\n"
 
-#         return response_dcard
-#     except Exception as e:
-#         logger.error(e)
-#         return ""
-    
+    return response_dcard
+
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
@@ -314,6 +330,9 @@ def handle_message(event):
         elif re.match("ptt (.*)", message):
             index = re.match("ptt (.*)", message).group(1)
             response = ptt(index)
+        elif re.match("星光閃耀", message):
+            video_url = "https://i.imgur.com/WFs8P52.mp4"
+            response = VideoMessage(original_content_url=video_url, preview_image_url=video_url)
     
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
