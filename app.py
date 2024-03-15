@@ -19,17 +19,17 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-app = Flask(__name__)
-logging.basicConfig(level=logging.ERROR)
-logger = logging.getLogger(__name__)
-
 #一哥起床
 def wake_up():
     while 1 == 1:
         url = "https://linebot-openai-1.onrender.com" + "render_wake_up"
-        res = request.get(url)
+        res = requests.get(url)
         time.sleep(15*60)
-threading.Thread(target = wake_up).start
+threading.Thread(target = wake_up).start()
+
+app = Flask(__name__)
+logging.basicConfig(level=logging.ERROR)
+logger = logging.getLogger(__name__)
 
 # 必須放上自己的Channel Access Token
 line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc581psOLe+b/J7Iu7qCIrJDPFypvefXy+D4udYFHl9OSYoSXFIEkJmKpjhHPBk3UQP5Kqk37isFkfytaPpgoWh3o0mQwrS5wvQdB04t89/1O/w1cDnyilFU=')
@@ -41,6 +41,11 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 @app.route("/")
 def hello():
     return "Hello World!"
+
+#一哥起床
+@app.route("/render_wake_up")
+def render_wake_up():
+    return "Hey!Wake Up!!"
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
