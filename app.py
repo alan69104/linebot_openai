@@ -2,6 +2,7 @@ import os
 import time
 import logging
 import requests
+import threading
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,6 +22,14 @@ from linebot.models import *
 app = Flask(__name__)
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
+
+#一哥起床
+def wake_up():
+    while 1 == 1:
+        url = "https://linebot-openai-1.onrender.com" + "render_wake_up"
+        res = request.get(url)
+        time.sleep(15*60)
+threading.Thread(target = wake_up).start
 
 # 必須放上自己的Channel Access Token
 line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc581psOLe+b/J7Iu7qCIrJDPFypvefXy+D4udYFHl9OSYoSXFIEkJmKpjhHPBk3UQP5Kqk37isFkfytaPpgoWh3o0mQwrS5wvQdB04t89/1O/w1cDnyilFU=')
