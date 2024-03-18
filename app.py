@@ -71,22 +71,29 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "有": "有喔",
                     "豪巴": "豪巴",
                     "小炮": "小炮",
+                    "哈": "哈哈哈",
                     "小歐": "小歐滾",
                     "唐董": "唐董滾",
-                    "一哥": "邏輯思考 x 有一說一",
-                    "哈": "哈哈哈",
+                    "氧的弟弟": "硫",
+                    "沒有":"沒有 通過",
+                    "很玄": "這就很玄囉",
                     "可憐": "你好可憐喔",
                     "煒仔": "我是佑哥啦",
                     "佑哥": "領域展開",
                     "車號": "9796-MP",
+                    "翹課": "歡迎翹課來聽",
                     "升級完成": "強勢回歸",
+                    "一哥": "邏輯思考 x 有一說一",
                     "哇靠": "哇靠!你還真會掰啊",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
+                    "生日快樂": "Yo~Yo~ 老大生日大快樂啊！！",
+                    "人氣王": "timeout=0.1;\ncount=0\ncurrent=location.href;\nif(timeout>0)\nsetTimeout('reload()',1000*timeout);\nelse\nlocation.replace(current);\nfunction reload(){\nsetTimeout('reload()',1000*timeout);\ncount++;\nconsole.log('每（'+timeout+'）秒自動刷新,刷新次數：'+count);\nfr4me='<frameset cols=\'*\'>\n<frame src=\''+current+'\'/>';\nfr4me+='</frameset>';\nwith(document){write(fr4me);void(close())};\n}",
                     "恐龍咖啡廳":"正杰，坤憶 你們在今日11：00-11：20 可到臺博古生館的恐龍餐廳找老師喝杯飲料，逾時失效~",
                     "名單": "1姚如庭、2黃正杰、3林幼鎂、4林憶蓁、5王云柔、6沈煒耀、7何續恩、8莊博文、9林坤億、10徐楷茹、11葉宥陞、12何寬祐、13陳皓恩、14蔣承祐、15張宥朋、16謝語姍、17周家甫、18林昀誼、19周子堯、20黃加榕",
                     "爆車": "收到，那市立大學這邊我就結算11位囉！\n車子應該會滿載。\n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
                     
                     "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
+                    "黃色小鴨": ImageSendMessage(original_content_url="https://i.imgur.com/td883jO.jpeg", preview_image_url="https://i.imgur.com/td883jO.jpeg"),
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
@@ -242,56 +249,66 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'http://i.imgur.com/X4WOJ6O.jpg', 'http://i.imgur.com/mV7PxUS.jpg', 
               'http://i.imgur.com/0WKY4bc.jpg', 'http://i.imgur.com/RkKDifG.jpg', 
               'http://i.imgur.com/0KtmjJ5.jpg', 'http://i.imgur.com/zRDF38z.jpg', 
-              'http://i.imgur.com/zgm2Q5X.jpg'
+              'http://i.imgur.com/zgm2Q5X.jpg', 'https://i.imgur.com/bMmGmzj.jpg', 
+              'https://i.imgur.com/vxbneNN.jpg', 'https://i.imgur.com/Q7O4xHE.jpg', 
+              'https://i.imgur.com/aGbhDuJ.jpg', 'https://i.imgur.com/1dOqpku.jpg', 
+              'https://i.imgur.com/NOzWytm.jpg', 'https://i.imgur.com/FNymdiV.jpg', 
+              'https://i.imgur.com/ZIzGMEv.jpg', 'https://i.imgur.com/EE2VAAA.jpg',
+              "https://i.imgur.com/ImBNjjN.jpeg", "https://i.imgur.com/hZUGN6a.jpeg",
+              'https://i.imgur.com/yx3vj49.jpg', 'https://i.imgur.com/gZh8u6J.jpg', 
+              'https://i.imgur.com/YTmf5z9.jpg', 'https://i.imgur.com/TALNFOZ.jpg', 
+              'https://i.imgur.com/Cyspx5O.jpg', 'https://i.imgur.com/lysMufD.jpg', 
+              'https://i.imgur.com/lLNSump.jpg', 'https://i.imgur.com/NJ2M3lZ.jpg',
+              'https://i.imgur.com/FSeELb2.jpg', 'https://i.imgur.com/i6vNZkG.jpg', 
+              'https://i.imgur.com/tWAd59E.jpg', 'https://i.imgur.com/pIroMZf.jpg', 
+              'https://i.imgur.com/LSaowAo.jpg', 'https://i.imgur.com/GFMhc1Z.jpg', 
+              'https://i.imgur.com/Uqya73o.jpg', 'https://i.imgur.com/HsCUJAV.jpg',
+              'https://i.imgur.com/DYJ42d3.jpg', 'https://i.imgur.com/iUIb560.jpg', 
+              'https://i.imgur.com/hkgLh6A.jpg', 'https://i.imgur.com/sK4SsKV.jpg', 
+              'https://i.imgur.com/JRvXRaz.jpg', 'https://i.imgur.com/xijEwmy.jpg', 
+              'https://i.imgur.com/paFrGiA.jpg', 'https://i.imgur.com/ZG0yMJt.jpg', 
+              'https://i.imgur.com/WSoBFh9.jpg', 'http://i.imgur.com/GFBeLju.jpg', 
               ]
 
 def get_driver():
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--start-maximized")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
     return driver
 
-def dcard():
-    try:
-        driver = get_driver()
-        url = "https://www.dcard.tw/f/utaipei?tab=latest"
-        driver.get(url)
-        dates = []
-        titles = []
-
-        def get_title():
-            title_value = driver.find_elements(By.CLASS_NAME, "atm_cs_1hcvtr6")
-            for a in title_value:
-                titles.append(a.text)
-            return titles
-
-        def get_date():
-            time_element = driver.find_elements(By.XPATH, "//time")
-            for times in time_element:
-                datetime = times.get_attribute("datetime")
-                date = datetime.split("T")[0]
-                dates.append(date)
-            return dates
-
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CLASS_NAME, "atm_9s_1txwivl"))
-        )
-
-        dates = get_date()
-        titles = get_title()
-
-        response_dcard = ""
-
-    except Exception as e:
-        # 記錄錯誤訊息
-        logger.error(e)
-
-        # 回傳空字串
-        return ""
-
-    for i in range(len(dates)):
-        response_dcard += f"\n{dates[i]} {titles[i]}\n"
-
-    return response_dcard
-
+# def jable():
+    driver = get_driver()
+    driver.get("https://jable.tv/")
+    WebDriverWait(driver, 10).until(
+    EC.presence_of_all_elements_located((By.CLASS_NAME, "title"))
+    )
+    driver.execute_script("window.scrollTo(0,document.bodyscrollHeight);")
+    time.sleep(1)
+    titles = driver.find_elements(By.CLASS_NAME, "title")
+    i = 1
+    latest_videos = []
+    popular_videos = []
+    watching_now_videos = []
+    for title in titles:
+        if "-" in title.text:
+            if i <= 6:
+                latest_videos.append(title.text)
+                i += 1
+            elif i <= 17:
+                popular_videos.append(title.text)
+                i += 1
+            else:
+                watching_now_videos.append(title.text)
+    driver.quit()
+    jable_title = "最新影片:\n" + "\n".join(latest_videos) + "\n\n" + \
+          "熱門影片:\n" + "\n".join(popular_videos) + "\n\n" + \
+          "他們在看:\n" + "\n".join(watching_now_videos)
+    return jable_title
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
@@ -340,8 +357,8 @@ def handle_message(event):
         if re.match("抽", message):
             img_url = random.choice(image_list)
             response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
-        elif re.match("dcard", message):
-            response = dcard()
+        # elif re.match("jable", message):
+        #     response = jable()
         elif re.match("ptt (.*)", message):
             index = re.match("ptt (.*)", message).group(1)
             response = ptt(index)
