@@ -8,3 +8,4 @@ logger
 twstock
 pandas
 matplotlib
+lxml
