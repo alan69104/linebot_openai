@@ -3,6 +3,10 @@ import time
 import logging
 import requests
 import threading
+import twstock
+import matplotlib.pyplot as plt
+import pandas as pd
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -343,6 +347,62 @@ def ptt(index):
         return "無法取得 PTT 文章"
 
 
+#股票價格
+def get_stock_info(code):
+    stock = twstock.Stock(code)
+    return stock
+
+def get_latest_price(code):
+    stock_rt = twstock.realtime.get(code)
+    if stock_rt['success']:
+        latest_trade_price = stock_rt['realtime']['latest_trade_price']
+        print("最新交易價格:", latest_trade_price)
+    else:
+        print("無法獲取最新交易價格。")
+
+def plot_trend(code, days):
+    stock = get_stock_info(code)
+    date_ranges = {'15D': 15, '30D': 30, '6M': 180, '2Y': 365*2}
+    if days not in date_ranges:
+        print("無法獲取最新交易價格。")
+        return
+
+    # Calculate date range
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=date_ranges[days])
+
+    # Get historical data for the specified date range
+    data = stock.fetch_from(start_date.year, start_date.month)
+
+    # Convert data to DataFrame format
+    df = pd.DataFrame(data)
+
+    # Plot the trend
+    plt.figure(figsize=(10, 6))
+    plt.plot(df['date'], df['close'], label='Close Price', color='blue')
+    plt.title(f'Stock Price Trend - {days}')
+    plt.xlabel('Date')
+    plt.ylabel('Price (TWD)')
+    plt.xticks(rotation=45)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+def stock_main(command):
+    if command.startswith("##"):
+        code = command[2:]
+        get_latest_price(code)
+    else:
+        command_list = command.split()
+        if len(command_list) >= 2 and command_list[1] == '趨勢':
+            code = command_list[0]
+            for days in ['15D', '30D', '6M', '2Y']:
+                plot_trend(code, days)
+                time.sleep(1)  # 暫停1秒,避免圖片傳送過快
+            response = f"已繪製並傳送 {code} 的 15D、30D、6M 和 2Y 四張走勢圖。"
+
+
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
 @handler.add(MessageEvent, message=TextMessage)
@@ -365,7 +425,16 @@ def handle_message(event):
         elif re.match("星光閃耀", message):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
-    
+        elif re.match("## (.*)", message):
+            command = re.match("## (.*)", message).group(1)
+            stock_main(command)
+        elif re.match(r"(\d+)\s*趨勢", message):
+            code = re.match(r"(\d+)\s*趨勢", message).group(1)
+            for days in ['15D', '30D', '6M', '2Y']:
+                plot_trend(code, days)
+                time.sleep(1)
+            response = f"已繪製並傳送 {code} 的 15D、30D、6M 和 2Y 四張走勢圖。"
+
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
