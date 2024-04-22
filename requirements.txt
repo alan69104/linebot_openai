@@ -5,3 +5,4 @@ selenium
 BeautifulSoup4
 webdriver-manager
 logger
+twstock
