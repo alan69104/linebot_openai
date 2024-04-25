@@ -1,4 +1,5 @@
 import os
+import io
 import time
 import logging
 import requests
@@ -90,7 +91,6 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "生日快樂": "Yo~Yo~ 老大生日大快樂啊！！",
                     "騙子": "一群詐騙份子，你們遲早會滅亡在東南亞!",
-                    "行事曆": "https://my.utaipei.edu.tw/utaipei/zzp_pro/pdf_app/_zzp800.pdf",
                     "讀書會": "今天有讀書會喔! \n 地點:S104 \n 時間:17:00-19:00 \n 系學會成員一樣有專屬小點心!",                  
                     "人氣王": "timeout=0.1;\ncount=0\ncurrent=location.href;\nif(timeout>0)\nsetTimeout('reload()',1000*timeout);\nelse\nlocation.replace(current);\nfunction reload(){\nsetTimeout('reload()',1000*timeout);\ncount++;\nconsole.log('每（'+timeout+'）秒自動刷新,刷新次數：'+count);\nfr4me='<frameset cols=\'*\'>\n<frame src=\''+current+'\'/>';\nfr4me+='</frameset>';\nwith(document){write(fr4me);void(close())};\n}",
                     "恐龍咖啡廳":"正杰，坤憶 你們在今日11：00-11：20 可到臺博古生館的恐龍餐廳找老師喝杯飲料，逾時失效~",
@@ -99,6 +99,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     
                     "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
                     "黃色小鴨": ImageSendMessage(original_content_url="https://i.imgur.com/td883jO.jpeg", preview_image_url="https://i.imgur.com/td883jO.jpeg"),
+                    "行事曆": ImageSendMessage(original_content_url="https://my.utaipei.edu.tw/utaipei/zzp_pro/pdf_app/_zzp800.pdf", preview_image_url="https://my.utaipei.edu.tw/utaipei/zzp_pro/pdf_app/_zzp800.pdf"),
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
@@ -357,9 +358,13 @@ def get_latest_price(code):
     stock_rt = twstock.realtime.get(code)
     if stock_rt['success']:
         latest_trade_price = stock_rt['realtime']['latest_trade_price']
-        print("最新交易價格:", latest_trade_price)
+        fullname = stock_rt['info']['fullname']
+        responses_latest_price = (fullname, "最新交易價格:", latest_trade_price)
     else:
-        print("無法獲取最新交易價格。")
+        responses_latest_price = ("無法獲取最新交易價格。")
+        
+    return responses_latest_price
+
 
 def plot_trend(code):
     stock = get_stock_info(code)
@@ -379,17 +384,31 @@ def plot_trend(code):
         # Convert data to DataFrame format
         df = pd.DataFrame(data)
 
-    # Plot the trend
-    plt.figure(figsize=(10, 6))
-    plt.plot(df['date'], df['close'], label='Close Price', color='blue')
-    plt.title(f'Stock Price Trend - {days}')
-    plt.xlabel('Date')
-    plt.ylabel('Price (TWD)')
-    plt.xticks(rotation=45)
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+        # Plot the trend
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(df['date'], df['close'], label='Close Price', color='blue')
+        ax.set_title(f'Stock Price Trend - {days}')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Price (TWD)')
+        plt.xticks(rotation=45)
+        ax.legend()
+        ax.grid(True)
+        plt.tight_layout()
+
+        # Save plot to in-memory file
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+
+        # Send plot as image message
+        image_message = ImageSendMessage(
+            original_content_url=f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}",
+            preview_image_url=f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}"
+        )
+        line_bot_api.reply_message(event.reply_token, image_message)
+
+        # Clear plot for next iteration
+        plt.close(fig)
 
 def stock_main(command):
     if command.startswith("價格"):
