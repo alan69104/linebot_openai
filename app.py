@@ -399,7 +399,7 @@ def plot_trend(code):
     plt.show()
 
 def stock_main(command):
-    if command.startswith("##"):
+    if command.startswith("價格"):
         code = command[2:]
         get_latest_price(code)
     else:
@@ -433,11 +433,11 @@ def handle_message(event):
         elif re.match("星光閃耀", message):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
-        elif re.match("## (.*)", message):
-            command = re.match("價格 (.*)", message).group(1)
-            response = stock_main(command)
-        elif re.match("趨勢 (.*)", message):
-            code = re.match("趨勢 (.*)", message).group(1)
+        elif re.match("價格(\d+)", message):
+            code = re.match("價格(\d+)", message).group(1)
+            response = stock_main(code)
+        elif re.match("趨勢(\d+)", message):
+            code = re.match("趨勢(\d+)", message).group(1)
             response = stock_main(code)
 
     # 如果 response 不是 None，則表示找到了相符的回覆
