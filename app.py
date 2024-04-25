@@ -432,11 +432,11 @@ def handle_message(event):
         elif re.match("星光閃耀", message):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
-        elif re.match("價格(\d+)", message):
-            code = re.match(message).group(1)
+        elif re.match(r"價格(\d+)", message):
+            code = re.match(r"價格(\d+)", message).group(1)
             response = get_latest_price(code)
-        elif re.match("趨勢(\d+)", message):
-            code = re.match("趨勢(\d+)", message).group(1)
+        elif re.match(r"趨勢(\d+)", message):
+            code = re.match(r"趨勢(\d+)", message).group(1)
             response = stock_main(code)
 
     # 如果 response 不是 None，則表示找到了相符的回覆
