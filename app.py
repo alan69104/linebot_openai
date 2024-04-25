@@ -404,7 +404,7 @@ def stock_main(command):
         get_latest_price(code)
     else:
         command_list = command.split()
-        code = command_list[0]
+        code = command_list[2:]
         for days in ['15D', '30D', '6M', '2Y']:
             plot_trend(code)
             time.sleep(1)  # 暫停1秒,避免圖片傳送過快
@@ -433,7 +433,7 @@ def handle_message(event):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
         elif re.match("價格(\d+)", message):
-            code = re.match("價格(\d+)", message).group(1)
+            code = re.match(message).group(1)
             response = get_latest_price(code)
         elif re.match("趨勢(\d+)", message):
             code = re.match("趨勢(\d+)", message).group(1)
