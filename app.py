@@ -23,13 +23,6 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-#一哥起床
-def wake_up():
-    while 1 == 1:
-        url = "https://linebot-openai-1.onrender.com" + "render_wake_up"
-        res = requests.get(url)
-        time.sleep(15*60)
-threading.Thread(target = wake_up).start()
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.ERROR)
