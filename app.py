@@ -90,6 +90,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "鳴人小哥": "鳴人小哥",
                     "翹課": "歡迎翹課來聽",
                     "升級完成": "強勢回歸",
+                    "岩石與礦物": "心理陰影",
                     "我做不到": "我就是做不到",
                     "一哥": "邏輯思考 x 有一說一",
                     "哇靠": "哇靠!你還真會掰啊",
@@ -367,22 +368,23 @@ def get_latest_price(code):
     else:
         print("無法獲取最新交易價格。")
 
-def plot_trend(code, days):
+def plot_trend(code):
     stock = get_stock_info(code)
     date_ranges = {'15D': 15, '30D': 30, '6M': 180, '2Y': 365*2}
     if days not in date_ranges:
         print("無法獲取最新交易價格。")
         return
 
-    # Calculate date range
-    end_date = datetime.today()
-    start_date = end_date - timedelta(days=date_ranges[days])
+    for days, num_days in date_ranges.items():
+        # Calculate date range
+        end_date = datetime.today()
+        start_date = end_date - timedelta(days=num_days)
 
-    # Get historical data for the specified date range
-    data = stock.fetch_from(start_date.year, start_date.month)
+        # Get historical data for the specified date range
+        data = stock.fetch_from(start_date.year, start_date.month)
 
-    # Convert data to DataFrame format
-    df = pd.DataFrame(data)
+        # Convert data to DataFrame format
+        df = pd.DataFrame(data)
 
     # Plot the trend
     plt.figure(figsize=(10, 6))
@@ -405,9 +407,8 @@ def stock_main(command):
         if len(command_list) >= 2 and command_list[1] == '趨勢':
             code = command_list[0]
             for days in ['15D', '30D', '6M', '2Y']:
-                plot_trend(code, days)
+                plot_trend(code)
                 time.sleep(1)  # 暫停1秒,避免圖片傳送過快
-            response = f"已繪製並傳送 {code} 的 15D、30D、6M 和 2Y 四張走勢圖。"
 
 
 #訊息傳遞區塊
@@ -433,14 +434,11 @@ def handle_message(event):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
         elif re.match("## (.*)", message):
-            command = re.match("## (.*)", message).group(1)
-            stock_main(command)
-        elif re.match(r"(\d+)\s*趨勢", message):
-            code = re.match(r"(\d+)\s*趨勢", message).group(1)
-            for days in ['15D', '30D', '6M', '2Y']:
-                plot_trend(code, days)
-                time.sleep(1)
-            response = f"已繪製並傳送 {code} 的 15D、30D、6M 和 2Y 四張走勢圖。"
+            command = re.match("價格 (.*)", message).group(1)
+            response = stock_main(command)
+        elif re.match("趨勢 (.*)", message):
+            code = re.match("趨勢 (.*)", message).group(1)
+            response = stock_main(code)
 
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
