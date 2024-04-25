@@ -404,11 +404,10 @@ def stock_main(command):
         get_latest_price(code)
     else:
         command_list = command.split()
-        if len(command_list) >= 2 and command_list[1] == '趨勢':
-            code = command_list[0]
-            for days in ['15D', '30D', '6M', '2Y']:
-                plot_trend(code)
-                time.sleep(1)  # 暫停1秒,避免圖片傳送過快
+        code = command_list[0]
+        for days in ['15D', '30D', '6M', '2Y']:
+            plot_trend(code)
+            time.sleep(1)  # 暫停1秒,避免圖片傳送過快
 
 
 #訊息傳遞區塊
@@ -435,7 +434,7 @@ def handle_message(event):
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
         elif re.match("價格(\d+)", message):
             code = re.match("價格(\d+)", message).group(1)
-            response = stock_main(code)
+            response = get_latest_price(code)
         elif re.match("趨勢(\d+)", message):
             code = re.match("趨勢(\d+)", message).group(1)
             response = stock_main(code)
