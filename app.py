@@ -355,6 +355,7 @@ def get_latest_price(code):
     if stock_rt['success']:
         latest_trade_price = stock_rt['realtime']['latest_trade_price']
         fullname = stock_rt['info']['fullname']
+        print(fullname, "最新交易價格:", latest_trade_price)
         responses_latest_price = (fullname, "最新交易價格:", latest_trade_price)
     else:
         responses_latest_price = ("無法獲取最新交易價格。")
