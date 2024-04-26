@@ -355,7 +355,6 @@ def get_latest_price(code):
     if stock_rt['success']:
         latest_trade_price = stock_rt['realtime']['latest_trade_price']
         fullname = stock_rt['info']['fullname']
-        print(fullname, "最新交易價格:", latest_trade_price)
         responses_latest_price = (fullname, "最新交易價格:", latest_trade_price)
     else:
         responses_latest_price = ("無法獲取最新交易價格。")
@@ -413,7 +412,7 @@ def stock_main(command):
         get_latest_price(code)
     else:
         command_list = command.split()
-        code = command_list[2:]
+        code = command_list[1]
         for days in ['15D', '30D', '6M', '2Y']:
             plot_trend(code)
             time.sleep(1)  # 暫停1秒,避免圖片傳送過快
