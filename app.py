@@ -36,10 +36,6 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
 # line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
-@app.route("/")
-def hello():
-    return "Hello World!"
-
 #一哥起床
 @app.route("/render_wake_up")
 def render_wake_up():
