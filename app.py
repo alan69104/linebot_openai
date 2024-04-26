@@ -355,11 +355,11 @@ def get_latest_price(code):
     if stock_rt['success']:
         latest_trade_price = stock_rt['realtime']['latest_trade_price']
         fullname = stock_rt['info']['fullname']
-        responses_latest_price = (fullname, "最新交易價格:", latest_trade_price)
+        response_message = f"{fullname} 最新交易價格: {latest_trade_price}"
     else:
-        responses_latest_price = ("無法獲取最新交易價格。")
+        response_message = "無法獲取最新交易價格。"
         
-    return responses_latest_price
+    return TextSendMessage(text=response_message)
 
 
 def plot_trend(code):
@@ -456,5 +456,5 @@ def handle_message(event):
 
 #主程式
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
