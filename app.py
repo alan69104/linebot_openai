@@ -1,5 +1,6 @@
 import os
 import io
+from io import BytesIO
 import time
 import logging
 import requests
@@ -13,6 +14,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+from imgurpython import ImgurClient
 import re
 import random
 from flask import Flask, request, abort
@@ -366,6 +368,7 @@ def get_latest_price(code):
 def plot_trend(code):
     stock = get_stock_info(code)
     date_ranges = {'15D': 15, '30D': 30, '6M': 180, '2Y': 365*2}
+    image_messages = []  # 存儲圖片消息的列表
     if days not in date_ranges:
         print("無法獲取最新交易價格。")
         return
@@ -393,19 +396,24 @@ def plot_trend(code):
         plt.tight_layout()
 
         # Save plot to in-memory file
-        buf = io.BytesIO()
+        buf = BytesIO()
         plt.savefig(buf, format='png')
         buf.seek(0)
 
-        # Send plot as image message
+        # Upload image to Imgur
+        client_id = 'c0fad094e155b1e'
+        client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
+        client = ImgurClient(client_id, client_secret)
+        image = client.upload(buf.getvalue(), title='Stock Trend')
+        url = image['link']
         image_message = ImageSendMessage(
-            original_content_url=f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}",
-            preview_image_url=f"data:image/png;base64,{base64.b64encode(buf.getvalue()).decode()}"
+            original_content_url=url,
+            preview_image_url=url
         )
-        line_bot_api.reply_message(event.reply_token, image_message)
+        image_messages.append(image_message)  # 將圖片消息存儲到列表中
 
-        # Clear plot for next iteration
-        plt.close(fig)
+    return image_messages  # 返回圖片消息列表
+
 
 def stock_main(command):
     if command.startswith("價格"):
@@ -414,9 +422,13 @@ def stock_main(command):
     else:
         command_list = command.split()
         code = command_list[1]
+        image_messages = []  # 存儲所有圖片消息的列表
         for days in ['15D', '30D', '6M', '2Y']:
-            plot_trend(code)
+            images = plot_trend(code)  # 獲取圖片消息列表
+            image_messages.extend(images)  # 將列表擴展到存儲所有圖片消息的列表中
             time.sleep(1)  # 暫停1秒,避免圖片傳送過快
+        return image_messages  # 返回所有圖片消息列表
+
 
 
 #訊息傳遞區塊
