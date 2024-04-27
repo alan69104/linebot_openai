@@ -356,7 +356,7 @@ def get_latest_price(code):
     stock_rt = twstock.realtime.get(code)
     if stock_rt['success']:
         latest_trade_price = stock_rt['realtime']['latest_trade_price']
-        latest_trade_price = f"{str(latest_trade_price):.2f}"
+        latest_trade_price = f"{float(latest_trade_price):.2f}"
         name = stock_rt['info']['name']
         response_message = f"{name} 最新交易價格: {latest_trade_price}"
     else:
