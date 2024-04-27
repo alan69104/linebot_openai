@@ -9,3 +9,4 @@ twstock
 pandas
 matplotlib
 lxml
+imgurpython
