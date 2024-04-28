@@ -405,7 +405,7 @@ def plot_trend(code):
         client_id = 'c0fad094e155b1e'
         client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
         client = ImgurClient(client_id, client_secret)
-        image = client.upload(buf.getvalue(), title='Stock Trend')
+        image = client.upload_from_path(buf.getvalue(), title='Stock Trend')
         url = image['link']
         image_message = ImageSendMessage(
             original_content_url=url,
