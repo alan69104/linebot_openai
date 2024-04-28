@@ -369,7 +369,7 @@ import os
 
 def plot_trend(code):
     stock = get_stock_info(code)
-    date_ranges = {'15D': 15, '30D': 30, '6M': 180, '2Y': 365*2}
+    date_ranges = {'2Y': 365*2}
     image_messages = []  # 存儲圖片消息的列表
 
     for days, num_days in date_ranges.items():
@@ -428,10 +428,9 @@ def stock_main(command):
         get_latest_price(code)
     else:
         image_messages = []  # 存儲所有圖片消息的列表
-        for days in ['15D', '30D', '6M', '2Y']:
-            images = plot_trend(command)  # 獲取圖片消息列表
-            image_messages.extend(images)  # 將列表擴展到存儲所有圖片消息的列表中
-            time.sleep(1)  # 暫停1秒,避免圖片傳送過快
+        images = plot_trend(command)  # 獲取圖片消息列表
+        image_messages.extend(images)  # 將列表擴展到存儲所有圖片消息的列表中
+        time.sleep(1)  # 暫停1秒,避免圖片傳送過快
         return image_messages  # 返回所有圖片消息列表
 
 
