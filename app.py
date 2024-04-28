@@ -426,7 +426,7 @@ def stock_main(command):
         get_latest_price(code)
     else:
         parts = command.split()
-        days, code = parts
+        duration, code = parts
         return plot_trend(code, duration)
 
 
