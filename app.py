@@ -364,12 +364,9 @@ def get_latest_price(code):
         
     return TextSendMessage(text=response_message)
 
-
-import os
-
-def plot_trend(code):
+def plot_trend(code, days):
     stock = get_stock_info(code)
-    date_ranges = {'2Y': 365*2}
+    date_ranges =  {'1D': 1, '5D': 5, "1M": 30, '6M': 180, '1Y': 365, '5Y': 365*5}
     image_messages = []  # 存儲圖片消息的列表
 
     for days, num_days in date_ranges.items():
@@ -427,11 +424,9 @@ def stock_main(command):
         code = command[2:]
         get_latest_price(code)
     else:
-        image_messages = []  # 存儲所有圖片消息的列表
-        images = plot_trend(command)  # 獲取圖片消息列表
-        image_messages.extend(images)  # 將列表擴展到存儲所有圖片消息的列表中
-        time.sleep(1)  # 暫停1秒,避免圖片傳送過快
-        return image_messages  # 返回所有圖片消息列表
+        parts = command.split()
+        days, code = parts
+        return plot_trend(code, days)
 
 
 
@@ -460,9 +455,9 @@ def handle_message(event):
         elif re.match(r"價格(\d+)", message):
             code = re.match(r"價格(\d+)", message).group(1)
             response = get_latest_price(code)
-        elif re.match(r"趨勢(\d+)", message):
-            code = re.match(r"趨勢(\d+)", message).group(1)
-            response = stock_main(code)
+        elif re.match(r"(\d+[DdMmYy])\s+(\d+)", message):
+            duration_code = re.match(r"(\d+[DdMmYy])\s+(\d+)", message).groups()
+            response = stock_main(" ".join(duration_code))
 
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
