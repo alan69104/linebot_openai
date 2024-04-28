@@ -369,11 +369,12 @@ def plot_trend(code):
     stock = get_stock_info(code)
     date_ranges = {'15D': 15, '30D': 30, '6M': 180, '2Y': 365*2}
     image_messages = []  # 存儲圖片消息的列表
-    if days not in date_ranges:
-        print("無法獲取最新交易價格。")
-        return
 
     for days, num_days in date_ranges.items():
+        if days not in date_ranges:  # 將此行移到迴圈內部
+            print("無法獲取最新交易價格。")
+            continue
+
         # Calculate date range
         end_date = datetime.today()
         start_date = end_date - timedelta(days=num_days)
