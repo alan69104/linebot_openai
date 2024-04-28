@@ -108,6 +108,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "科學館": ImageSendMessage(original_content_url="https://i.imgur.com/NHZ3Clo.jpg", preview_image_url="https://i.imgur.com/NHZ3Clo.jpg"),
                     "收回": ImageSendMessage(original_content_url="https://i.imgur.com/khAtzmm.jpg", preview_image_url="https://i.imgur.com/khAtzmm.jpg"),
                     "勤樸樓B1": ImageSendMessage(original_content_url="https://i.imgur.com/CsefOc1.jpg", preview_image_url="https://i.imgur.com/CsefOc1.jpg"),
+                    "勤樸樓B1": ImageSendMessage(original_content_url="https://i.imgur.com/0RVIOGZ.png", preview_image_url="https://i.imgur.com/0RVIOGZ.png"),
                     "對": ImageSendMessage(original_content_url="https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1583774054073.jpg", preview_image_url="https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1583774054073.jpg"),
                     }
 
@@ -366,7 +367,7 @@ def get_latest_price(code):
 
 def plot_trend(code, duration):
     stock = get_stock_info(code)
-    date_ranges = {'1D': 1, '5D': 5, '1M': 30, '6M': 180, '1Y': 365, '2Y': 365*2}
+    date_ranges = {'1M': 30, '6M': 180, '1Y': 365, '2Y': 365*2, '5Y': 365*5, '10Y': 365*10}
     image_messages = []  # 存儲圖片消息的列表
 
     if duration not in date_ranges:  
