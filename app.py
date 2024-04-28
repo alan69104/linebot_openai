@@ -420,11 +420,9 @@ def stock_main(command):
         code = command[2:]
         get_latest_price(code)
     else:
-        command_list = command.split()
-        code = command_list[1]
         image_messages = []  # 存儲所有圖片消息的列表
         for days in ['15D', '30D', '6M', '2Y']:
-            images = plot_trend(code)  # 獲取圖片消息列表
+            images = plot_trend(command)  # 獲取圖片消息列表
             image_messages.extend(images)  # 將列表擴展到存儲所有圖片消息的列表中
             time.sleep(1)  # 暫停1秒,避免圖片傳送過快
         return image_messages  # 返回所有圖片消息列表
