@@ -371,10 +371,6 @@ def plot_trend(code):
     image_messages = []  # 存儲圖片消息的列表
 
     for days, num_days in date_ranges.items():
-        if days not in date_ranges:  # 將此行移到迴圈內部
-            print("無法獲取最新交易價格。")
-            continue
-
         # Calculate date range
         end_date = datetime.today()
         start_date = end_date - timedelta(days=num_days)
@@ -405,7 +401,7 @@ def plot_trend(code):
         client_id = 'c0fad094e155b1e'
         client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
         client = ImgurClient(client_id, client_secret)
-        image = client.upload_from_path(buf.getvalue(), anon=True)
+        image = client.upload(buf.getvalue(), anon=True)  # 直接上傳圖片的二進位數據
         url = image['link']
         image_message = ImageSendMessage(
             original_content_url=url,
@@ -414,6 +410,7 @@ def plot_trend(code):
         image_messages.append(image_message)  # 將圖片消息存儲到列表中
 
     return image_messages  # 返回圖片消息列表
+
 
 
 def stock_main(command):
