@@ -364,55 +364,56 @@ def get_latest_price(code):
         
     return TextSendMessage(text=response_message)
 
-def plot_trend(code, days):
+def plot_trend(code, duration):
     stock = get_stock_info(code)
     date_ranges = {'1D': 1, '5D': 5, '1M': 30, '6M': 180, '1Y': 365, '2Y': 365*2}
     image_messages = []  # 存儲圖片消息的列表
 
-    for days, num_days in date_ranges.items():
-        if days not in date_ranges:  # 將此行移到迴圈內部
-            print("無法獲取最新交易價格。")
-            continue
+    if duration not in date_ranges:  
+        print("無法獲取最新交易價格。")
+        return "無法獲取最新交易價格。"
 
-        # Calculate date range
-        end_date = datetime.today()
-        start_date = end_date - timedelta(days=num_days)
+    num_days = date_ranges[duration]
 
-        # Get historical data for the specified date range
-        data = stock.fetch_from(start_date.year, start_date.month)
+    # Calculate date range
+    end_date = datetime.today()
+    start_date = end_date - timedelta(days=num_days)
 
-        # Convert data to DataFrame format
-        df = pd.DataFrame(data)
+    # Get historical data for the specified date range
+    data = stock.fetch_from(start_date.year, start_date.month)
 
-        # Plot the trend
-        fig, ax = plt.subplots(figsize=(10, 6))
-        ax.plot(df['date'], df['close'], label='Close Price', color='blue')
-        ax.set_title(f'Stock Price Trend - {days}')
-        ax.set_xlabel('Date')
-        ax.set_ylabel('Price (TWD)')
-        plt.xticks(rotation=45)
-        ax.legend()
-        ax.grid(True)
-        plt.tight_layout()
+    # Convert data to DataFrame format
+    df = pd.DataFrame(data)
 
-        # Save plot to local file
-        image_path = f"{code}_{days}.png"
-        plt.savefig(image_path, format='png')
+    # Plot the trend
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(df['date'], df['close'], label='Close Price', color='blue')
+    ax.set_title(f'Stock Price Trend - {duration}')
+    ax.set_xlabel('Date')
+    ax.set_ylabel('Price (TWD)')
+    plt.xticks(rotation=45)
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
 
-        # Upload image to Imgur
-        client_id = 'c0fad094e155b1e'
-        client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
-        client = ImgurClient(client_id, client_secret)
-        image = client.upload_from_path(image_path, anon=True)  # 上傳本地文件
-        url = image['link']
-        image_message = ImageSendMessage(
-            original_content_url=url,
-            preview_image_url=url
-        )
-        image_messages.append(image_message)  # 將圖片消息存儲到列表中
+    # Save plot to local file
+    image_path = f"{code}_{duration}.png"
+    plt.savefig(image_path, format='png')
 
-        # Delete local image file
-        os.remove(image_path)
+    # Upload image to Imgur
+    client_id = 'c0fad094e155b1e'
+    client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
+    client = ImgurClient(client_id, client_secret)
+    image = client.upload_from_path(image_path, anon=True)  # 上傳本地文件
+    url = image['link']
+    image_message = ImageSendMessage(
+        original_content_url=url,
+        preview_image_url=url
+    )
+    image_messages.append(image_message)  # 將圖片消息存儲到列表中
+
+    # Delete local image file
+    os.remove(image_path)
 
     return image_messages  # 返回圖片消息列表
 
@@ -426,7 +427,7 @@ def stock_main(command):
     else:
         parts = command.split()
         days, code = parts
-        return plot_trend(code, days)
+        return plot_trend(code, duration)
 
 
 
