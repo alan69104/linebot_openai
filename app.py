@@ -366,7 +366,7 @@ def get_latest_price(code):
 
 def plot_trend(code, days):
     stock = get_stock_info(code)
-    date_ranges =  {'1D': 1, '5D': 5, "1M": 30, '6M': 180, '1Y': 365, '5Y': 365*5}
+    date_ranges = {'1D': 1, '5D': 5, '1M': 30, '6M': 180, '1Y': 365, '2Y': 365*2}
     image_messages = []  # 存儲圖片消息的列表
 
     for days, num_days in date_ranges.items():
