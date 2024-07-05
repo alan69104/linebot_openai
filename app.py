@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 from imgurpython import ImgurClient
 import re
 import random
-from flask import Flask, request, abort
+from flask import Flask, request, abort, render_template
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -27,7 +27,7 @@ from linebot.exceptions import (
 from linebot.models import *
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
@@ -39,9 +39,27 @@ handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 # line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
 #一哥起床
-@app.route("/render_wake_up")
-def render_wake_up():
+@app.route("/")
+def index():
+    return render_template("./index.html")
+
+@app.route("/wake_up")
+def wake_up():
     return "Hey!Wake Up!!"
+
+import threading 
+import requests
+def wake_up_heroku():
+    while 1==1:
+        url = 'https://linebot-openai-1.onrender.com' + 'wake_up'
+        res = requests.get(url)
+        if res.status_code==200:
+            print('喚醒heroku成功')
+        else:
+            print('喚醒失敗')
+        time.sleep(10*60)
+
+threading.Thread(target=wake_up_heroku).start()
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -318,6 +336,7 @@ def get_driver():
           "熱門影片:\n" + "\n".join(popular_videos) + "\n\n" + \
           "他們在看:\n" + "\n".join(watching_now_videos)
     return jable_title
+
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
@@ -433,7 +452,35 @@ def stock_main(command):
         duration, code = parts
         return plot_trend(code, duration)
 
-
+def weather(address):
+    code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE'
+    url = [f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={code}',
+        f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization={code}']
+    result = {}
+    for item in url:
+        req = requests.get(item)   # 爬取目前天氣網址的資料
+        data = req.json()
+        station = data['records']['Station']
+        for i in station:
+            area = i['GeoInfo']['TownName']
+            if not f'{area}' in result:
+                result[area] = {
+                    'weather' : i['WeatherElement']['Weather'],
+                    'temp' : i['WeatherElement']['AirTemperature'],
+                    'humid' : i['WeatherElement']['RelativeHumidity'],
+                    'humid' : i['WeatherElement']['RelativeHumidity'],
+                    'WindSpeed' : i['WeatherElement']['WindSpeed']
+                }
+    output = '找不到氣象資訊'
+    for i in result:
+        if i in address: # 如果地址裡存在 key 的名稱
+            weather = result[i]['weather'] if result[i]['weather'] != False else ''
+            temp = result[i]['temp'] if result[i]['temp'] != False else ''
+            humid = result[i]['humid'] if result[i]['humid'] != False else ''
+            WindSpeed = result[i]['WindSpeed'] if result[i]['WindSpeed'] != False else ''
+            output = f'「{address}」的天氣狀況「{weather}」，溫度 {temp} 度，相對濕度 {humid}%，風速{WindSpeed}m/s'
+            break
+    return output
 
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
@@ -463,7 +510,9 @@ def handle_message(event):
         elif re.match(r"(\d+[DdMmYy])\s+(\d+)", message):
             duration_code = re.match(r"(\d+[DdMmYy])\s+(\d+)", message).groups()
             response = stock_main(" ".join(duration_code))
-
+        elif re.match("天氣 (.*)", message):
+            index = re.match("天氣 (.*)", message).group(1)
+            response = weather(index)
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
