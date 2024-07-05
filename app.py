@@ -47,19 +47,17 @@ def index():
 def wake_up():
     return "Hey!Wake Up!!"
 
-import threading 
-import requests
-def wake_up_heroku():
+def wake_up_render():
     while 1==1:
-        url = 'https://linebot-openai-1.onrender.com' + 'wake_up'
+        url = 'https://linebot-openai-1.onrender.com' + '/wake_up'
         res = requests.get(url)
         if res.status_code==200:
-            print('喚醒heroku成功')
+            print('喚醒成功')
         else:
             print('喚醒失敗')
         time.sleep(10*60)
 
-threading.Thread(target=wake_up_heroku).start()
+threading.Thread(target=wake_up_render).start()
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
