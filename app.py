@@ -469,6 +469,7 @@ def weather(address):
                     'humid' : i['WeatherElement']['RelativeHumidity'],
                     'WindSpeed' : i['WeatherElement']['WindSpeed']
                 }
+    address = address.replace('區', '')
     output = '找不到氣象資訊'
     for i in result:
         if i in address: # 如果地址裡存在 key 的名稱
