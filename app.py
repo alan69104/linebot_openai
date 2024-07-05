@@ -36,7 +36,7 @@ line_bot_api = LineBotApi('9yR4ewDjV8MMC1s8DCcZbCHhwYzFvoVWR8OM3XIckQaV7JSzLvIDc
 # 必須放上自己的Channel Secret
 handler = WebhookHandler('046d3499ea137d0ac4192b9224c91899')
 
-# line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
+line_bot_api.push_message('U2245cda9373cd500a6fe9e8053729eac', TextSendMessage(text='請開始你的表演'))
 
 #一哥起床
 @app.route("/")
