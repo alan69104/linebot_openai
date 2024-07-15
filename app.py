@@ -605,7 +605,7 @@ def Departmental_website():
         text_content = div.get_text(strip=True)
         
         # 判斷是否為最新公告或其他公告
-        if i < 6:
+        if i < 5:
             new_announcements.append(text_content)
         else:
             other_announcements.append(text_content)
@@ -649,11 +649,17 @@ def handle_message(event):
         elif re.match("天氣 (.*)", message):
             index = re.match("天氣 (.*)", message).group(1)
             response = weather(index)
-        elif re.match("地震", message):
-            response = earthquake()
+        elif re.match("地震報告", message):
+            eq_info = earthquake()
+            if eq_info[0] != '沒有~':
+                response = [
+                    TextSendMessage(text=eq_info[0])
+                ]
+                if eq_info[1]:  # 確保圖片 URL 不為空
+                    response.append(ImageSendMessage(original_content_url=eq_info[1], preview_image_url=eq_info[1]))
         elif re.match("浩哥", message):
             response = scrape_utaipei_news()
-        elif re.match("系網", message):
+        elif re.match("cc", message):
             response = Departmental_website()
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
