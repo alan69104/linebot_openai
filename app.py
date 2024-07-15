@@ -88,6 +88,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "小歐": "小歐滾",
                     "唐董": "唐董滾",
                     "氧的弟弟": "硫",
+                    "整人嗎": "整人嗎",
                     "沒有":"沒有 通過",
                     "很玄": "這就很玄囉",
                     "可憐": "你好可憐喔",
@@ -95,6 +96,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "佑哥": "領域展開",
                     "車號": "9796-MP",
                     "備胎": "你有備胎嗎",
+                    "怕厚厚": "pa-hoy-hoy",
                     "打給我": "0965386966",
                     "冰島貓男": "冰島貓男",
                     "鳴人小哥": "鳴人小哥",
@@ -107,7 +109,8 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "生日快樂": "Yo~Yo~ 老大生日大快樂啊！！",
                     "騙子": "一群詐騙份子，你們遲早會滅亡在東南亞!",
-                    "讀書會": "今天有讀書會喔! \n 地點:S104 \n 時間:17:00-19:00 \n 系學會成員一樣有專屬小點心!",                  
+                    "肌肉型態": "文甫你好，關於分組的事情中午我已經用信箱email給你，可能需要麻煩你看一下。",   
+                    "讀書會": "今天有讀書會喔! \n 地點:S104 \n 時間:17:00-19:00 \n 系學會成員一樣有專屬小點心!",            
                     "人氣王": "timeout=0.1;\ncount=0\ncurrent=location.href;\nif(timeout>0)\nsetTimeout('reload()',1000*timeout);\nelse\nlocation.replace(current);\nfunction reload(){\nsetTimeout('reload()',1000*timeout);\ncount++;\nconsole.log('每（'+timeout+'）秒自動刷新,刷新次數：'+count);\nfr4me='<frameset cols=\'*\'>\n<frame src=\''+current+'\'/>';\nfr4me+='</frameset>';\nwith(document){write(fr4me);void(close())};\n}",
                     "恐龍咖啡廳":"正杰，坤憶 你們在今日11：00-11：20 可到臺博古生館的恐龍餐廳找老師喝杯飲料，逾時失效~",
                     "名單": "1姚如庭、2黃正杰、3林幼鎂、4林憶蓁、5王云柔、6沈煒耀、7何續恩、8莊博文、9林坤億、10徐楷茹、11葉宥陞、12何寬祐、13陳皓恩、14蔣承祐、15張宥朋、16謝語姍、17周家甫、18林昀誼、19周子堯、20黃加榕",
@@ -130,6 +133,8 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "勤樸樓": ImageSendMessage(original_content_url="https://i.imgur.com/0RVIOGZ.png", preview_image_url="https://i.imgur.com/0RVIOGZ.png"),
                     "對": ImageSendMessage(original_content_url="https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1583774054073.jpg", preview_image_url="https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1583774054073.jpg"),
                     "都會粉鳥鄰": ImageSendMessage(original_content_url="https://i.imgur.com/J591zvL.jpg", preview_image_url="https://i.imgur.com/J591zvL.jpg"),
+                    "蛤": ImageSendMessage(original_content_url="https://dailyview.tw/_next/image?url=https%3A%2F%2Fdvblobcdnjp.azureedge.net%2FContent%2FUpload%2FPopular%2FImages%2F2023-12%2Fa2bb7f8d-1e05-4f1d-81d7-d5c24ddd94c3_m.jpg&w=1200&q=75", preview_image_url="https://dailyview.tw/_next/image?url=https%3A%2F%2Fdvblobcdnjp.azureedge.net%2FContent%2FUpload%2FPopular%2FImages%2F2023-12%2Fa2bb7f8d-1e05-4f1d-81d7-d5c24ddd94c3_m.jpg&w=1200&q=75"),
+
                     }
 
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
@@ -451,34 +456,167 @@ def stock_main(command):
         return plot_trend(code, duration)
 
 def weather(address):
+    # 定義一個內部輔助函數，用於發送 API 請求並返回 JSON 數據
+    def get_api_data(url):
+        req = requests.get(url)
+        return req.json()
+
+    # API 授權碼，用於所有的 API 請求
     code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE'
-    url = [f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={code}',
-        f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization={code}']
-    result = {}
-    for item in url:
-        req = requests.get(item)   # 爬取目前天氣網址的資料
-        data = req.json()
-        station = data['records']['Station']
-        for i in station:
-            area = i['GeoInfo']['TownName']
-            if not f'{area}' in result:
-                result[area] = {
-                    'weather' : i['WeatherElement']['Weather'],
-                    'temp' : i['WeatherElement']['AirTemperature'],
-                    'humid' : i['WeatherElement']['RelativeHumidity'],
-                    'humid' : i['WeatherElement']['RelativeHumidity'],
-                    'WindSpeed' : i['WeatherElement']['WindSpeed']
+    
+    # 獲取當前天氣數據
+    # 這部分合併了原本的 get_current_weather 函數的功能
+    current_weather_urls = [
+        f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={code}',
+        f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization={code}'
+    ]
+    current_weather = {}
+    for url in current_weather_urls:
+        data = get_api_data(url)
+        for station in data['records']['Station']:
+            area = station['GeoInfo']['TownName']
+            if area not in current_weather:
+                current_weather[area] = {
+                    'weather': station['WeatherElement'].get('Weather', 'N/A'),
+                    'temp': station['WeatherElement'].get('AirTemperature', 'N/A'),
+                    'humid': station['WeatherElement'].get('RelativeHumidity', 'N/A'),
+                    'WindSpeed': station['WeatherElement'].get('WindSpeed', 'N/A')
                 }
-    output = '找不到氣象資訊'
-    for i in result:
-        if i in address: # 如果地址裡存在 key 的名稱
-            weather = result[i]['weather'] if result[i]['weather'] != False else ''
-            temp = result[i]['temp'] if result[i]['temp'] != False else ''
-            humid = result[i]['humid'] if result[i]['humid'] != False else ''
-            WindSpeed = result[i]['WindSpeed'] if result[i]['WindSpeed'] != False else ''
-            output = f'「{address}」的天氣狀況「{weather}」，溫度 {temp} 度，相對濕度 {humid}%，風速{WindSpeed}m/s'
-            break
+
+    # 獲取降雨機率預報
+    # 這部分合併了原本的 get_all_forecasts 函數的功能
+    api_list = {
+        "宜蘭縣":"F-D0047-001","桃園市":"F-D0047-005","新竹縣":"F-D0047-009","苗栗縣":"F-D0047-013",
+        "彰化縣":"F-D0047-017","南投縣":"F-D0047-021","雲林縣":"F-D0047-025","嘉義縣":"F-D0047-029",
+        "屏東縣":"F-D0047-033","臺東縣":"F-D0047-037","花蓮縣":"F-D0047-041","澎湖縣":"F-D0047-045",
+        "基隆市":"F-D0047-049","新竹市":"F-D0047-053","嘉義市":"F-D0047-057","臺北市":"F-D0047-061",
+        "高雄市":"F-D0047-065","新北市":"F-D0047-069","臺中市":"F-D0047-073","臺南市":"F-D0047-077",
+        "連江縣":"F-D0047-081","金門縣":"F-D0047-085"
+    }
+    
+    # 計算時間範圍（當前時間到3小時後）
+    t = time.time()
+    t1 = t + 10800  # 10800 秒 = 3 小時
+    now = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(t))
+    now2 = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(t1))
+    
+    precipitation_forecast = {}
+    for city, city_id in api_list.items():
+        url = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/{city_id}?Authorization={code}&elementName=PoP6h&timeFrom={now}&timeTo={now2}'
+        data = get_api_data(url)
+        for location in data['records']['locations'][0]['location']:
+            area = location['locationName']
+            for element in location['weatherElement']:
+                if element['elementName'] == 'PoP6h':
+                    if element['time']:
+                        precipitation_forecast[area] = element['time'][0]['elementValue'][0]['value']
+                    else:
+                        precipitation_forecast[area] = "N/A"
+
+    # 合併數據並返回預報結果
+    # 這部分結合了原本 combined_weather_forecast 函數的邏輯
+    for area, weather_data in current_weather.items():
+        if address in area:
+            weather = weather_data['weather']
+            temp = weather_data['temp']
+            humid = weather_data['humid']
+            wind_speed = weather_data['WindSpeed']
+            precipitation = precipitation_forecast.get(area, "N/A")
+            ouput = f'「{address}」的天氣狀況「{weather}」，溫度 {temp} 度，相對濕度 {humid}%，風速{wind_speed}m/s，降雨機率{precipitation}%'
+            return ouput
+    ouput = f"找不到 「{address} 」的天氣預報資料"
+    return ouput
+
+#地震資訊
+def earthquake():
+    output = []
+    try:
+        code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE'
+        # 小區域
+        url = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0016-001?Authorization={code}'
+        req1 = requests.get(url)  # 爬取資料
+        data1 = req1.json()       # 轉換成 json
+        eq1 = data1['records']['Earthquake'][0]           # 取得第一筆地震資訊
+        t1 = data1['records']['Earthquake'][0]['EarthquakeInfo']['OriginTime']
+        # 顯著有感
+        url2 = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization={code}'
+        req2 = requests.get(url2)  # 爬取資料
+        data2 = req2.json()        # 轉換成 json
+        eq2 = data2['records']['Earthquake'][0]           # 取得第一筆地震資訊
+        t2 = data2['records']['Earthquake'][0]['EarthquakeInfo']['OriginTime']
+        
+        output = [eq1['ReportContent'], eq1['ReportImageURI']] # 先使用小區域地震
+        if t2>t1:
+          output = [eq2['ReportContent'], eq2['ReportImageURI']] # 如果顯著有感地震時間較近，就用顯著有感地震
+    except Exception as e:
+        print(e)
+        output = ['沒有~','']
     return output
+
+#校網
+def scrape_utaipei_news():
+    url = 'https://www.utaipei.edu.tw/'
+    
+    # 發送請求
+    response = requests.get(url)
+    html_content = response.text
+    
+    # 解析HTML
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    text = []
+    # 找到指定的div
+    div_content = soup.find('div', class_='col col_01')
+    if div_content:
+        # 提取所有條目
+        items = div_content.find_all(string=True)  # 使用string參數
+        for item in items:
+            clean_text = item.strip()  # 去掉多餘的空白字符
+            # 過濾不要的部分
+            if clean_text and not clean_text.startswith('<div class="list module md_style1">') and not clean_text.startswith('generated at') and clean_text != '更多最新消息':
+                text.append(clean_text)
+    
+    # 將所有內容組合成一個字符串
+    message = "\n".join(text)
+    
+    return message if message else "沒有找到指定的 div 或沒有內容"
+
+#系網
+def Departmental_website():
+    url = "https://envir.utaipei.edu.tw/"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        "Cookie": "over18=1"
+    }
+
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # 找到所有 <div class="mtitle"> 元素
+    mtitle_divs = soup.find_all("div", class_="mtitle")
+
+    # 初始化列表來存儲最新公告和其他公告
+    new_announcements = []
+    other_announcements = []
+
+    # 處理每個 <div class="mtitle"> 元素的內容
+    for i, div in enumerate(mtitle_divs):
+        # 獲取 div 元素的文本內容
+        text_content = div.get_text(strip=True)
+        
+        # 判斷是否為最新公告或其他公告
+        if i < 6:
+            new_announcements.append(text_content)
+        else:
+            other_announcements.append(text_content)
+
+    # 構建輸出訊息
+    message = "最新公告:\n"
+    message += "\n".join(new_announcements)
+    message += "\n\n其他公告:\n"
+    message += "\n".join(other_announcements)
+
+    return message
 
 #訊息傳遞區塊
 ##### 基本上程式編輯都在這個function #####
@@ -511,12 +649,17 @@ def handle_message(event):
         elif re.match("天氣 (.*)", message):
             index = re.match("天氣 (.*)", message).group(1)
             response = weather(index)
+        elif re.match("地震", message):
+            response = earthquake()
+        elif re.match("浩哥", message):
+            response = scrape_utaipei_news()
+        elif re.match("系網", message):
+            response = Departmental_website()
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
             response = TextSendMessage(text=response)
         line_bot_api.reply_message(event.reply_token, response)
-
 
 #主程式
 if __name__ == "__main__":
