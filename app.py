@@ -659,7 +659,7 @@ def handle_message(event):
                     response.append(ImageSendMessage(original_content_url=eq_info[1], preview_image_url=eq_info[1]))
         elif re.match("浩哥", message):
             response = scrape_utaipei_news()
-        elif re.match("cc", message):
+        elif re.match("笑cc", message):
             response = Departmental_website()
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
