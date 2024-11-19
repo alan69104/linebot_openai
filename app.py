@@ -80,7 +80,7 @@ def callback():
 
 keyword_responses = {"你是誰": "我是煒仔啦",
                     "ㄟ": "ㄟ",
-                    "有": "有喔",
+                    "有喔": "有喔",
                     "豪巴": "豪巴",
                     "小炮": "小炮",
                     "賀。": "賀。",
@@ -142,8 +142,8 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "蛤": ImageSendMessage(original_content_url="https://i.imgur.com/4WCAdso.png", preview_image_url="https://i.imgur.com/4WCAdso.png"),
                     "阿猴鮮乳": ImageSendMessage(original_content_url="https://imgcdn.cna.com.tw/www/WebPhotos/800/20240327/1004x768_wmkn_0_C20240327000158.jpg", preview_image_url="https://imgcdn.cna.com.tw/www/WebPhotos/800/20240327/1004x768_wmkn_0_C20240327000158.jpg"),
                     "有啊": ImageSendMessage(original_content_url="https://i.imgur.com/hXlc2oR.jpeg", preview_image_url="https://i.imgur.com/hXlc2oR.jpeg"),
-                    "有啊": ImageSendMessage(original_content_url="https://i.imgur.com/6evqzM0.jpeg", preview_image_url="https://i.imgur.com/6evqzM0.jpeg"),
-                    "有啊": ImageSendMessage(original_content_url="https://i.imgur.com/inOep1X.jpeg", preview_image_url="https://i.imgur.com/inOep1X.jpeg"),
+                    "實驗室": ImageSendMessage(original_content_url="https://i.imgur.com/6evqzM0.jpeg", preview_image_url="https://i.imgur.com/6evqzM0.jpeg"),
+                    "尤加利葉": ImageSendMessage(original_content_url="https://i.imgur.com/inOep1X.jpeg", preview_image_url="https://i.imgur.com/inOep1X.jpeg"),
                     }
 
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
