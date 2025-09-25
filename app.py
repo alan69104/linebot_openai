@@ -111,15 +111,18 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "打給我": "0965386966",
                     "冰島貓男": "冰島貓男",
                     "鳴人小哥": "鳴人小哥",
+                    "西螺便當": "西螺便當",
                     "翹課": "歡迎翹課來聽",
                     "升級完成": "強勢回歸",
                     "博文人呢": "還在金瓜石",
                     "岩石與礦物": "心理陰影",
                     "大象跳舞": "會導致地震",
+                    "地質垂": "可以踢足球嗎",                    
                     "巴士郭先生": "巴士郭先生",
-                    "我做不到": "我就是做不到",
-                    "一哥": "邏輯思考 x 有一說一",
+                    "我做不到": "我就是做不到",                    
                     "哇靠": "哇靠!你還真會掰啊",
+                    "五年級小男生": "0937092027",
+                    "一哥": "邏輯思考 x 有一說一",
                     "最後一搏": "cc 剛才去買雨鞋，潦落去了！",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "速速": "速速交來，不然七星劍要劈過去了",
@@ -139,7 +142,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
 
                     "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
                     "黃色小鴨": ImageSendMessage(original_content_url="https://i.imgur.com/td883jO.jpeg", preview_image_url="https://i.imgur.com/td883jO.jpeg"),
-                    "行事曆": ImageSendMessage(original_content_url="https://i.imgur.com/loYEcr3.jpg", preview_image_url="https://i.imgur.com/loYEcr3.jpg"),
+                    "行事曆": ImageSendMessage(original_content_url="https://my.utaipei.edu.tw/utaipei/zzp_pro/pdf_app/_zzp800.pdf?", preview_image_url="https://my.utaipei.edu.tw/utaipei/zzp_pro/pdf_app/_zzp800.pdf?"),
                     "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
@@ -158,6 +161,8 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "有啊": ImageSendMessage(original_content_url="https://i.imgur.com/hXlc2oR.jpeg", preview_image_url="https://i.imgur.com/hXlc2oR.jpeg"),
                     "實驗室": ImageSendMessage(original_content_url="https://i.imgur.com/6evqzM0.jpeg", preview_image_url="https://i.imgur.com/6evqzM0.jpeg"),
                     "尤加利葉": ImageSendMessage(original_content_url="https://i.imgur.com/inOep1X.jpeg", preview_image_url="https://i.imgur.com/inOep1X.jpeg"),
+                    "小碗": ImageSendMessage(original_content_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw", preview_image_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw"),
+                    "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
                     }
 
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
@@ -321,6 +326,44 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/JRvXRaz.jpg', 'https://i.imgur.com/xijEwmy.jpg', 
               'https://i.imgur.com/paFrGiA.jpg', 'https://i.imgur.com/ZG0yMJt.jpg', 
               'https://i.imgur.com/WSoBFh9.jpg', 'http://i.imgur.com/GFBeLju.jpg', 
+              'https://i.imgur.com/odIg9Ez.jpeg', 'https://i.imgur.com/4XddcrH.jpeg', 
+              'https://i.imgur.com/IiKSl2j.jpeg', 'https://i.imgur.com/WhGTNA5.jpeg', 
+              'https://i.imgur.com/RcL6AAI.jpeg', 'https://i.imgur.com/JwuOCRR.jpeg', 
+              'https://i.imgur.com/uYEk0fX.jpeg', 'https://i.imgur.com/zrt9VzG.jpeg', 
+              'https://i.imgur.com/CzN9mZ8.jpeg', 'https://i.imgur.com/jCX7g5n.jpeg', 
+              'https://i.imgur.com/LwK6Xu2.jpeg', 'https://i.imgur.com/XCT9OMD.jpeg', 
+              "https://i.imgur.com/o0b07ou.jpeg", 'https://files.catbox.moe/7zjmze.jpg', 
+              'https://files.catbox.moe/8hq9vz.jpg', 'https://files.catbox.moe/d46vrl.jpg', 
+              'https://files.catbox.moe/6xy066.jpeg', 'https://files.catbox.moe/wjfjd9.jpg', 
+              'https://files.catbox.moe/cyrpg6.jpg', 'https://files.catbox.moe/veuzr8.jpg', 
+              'https://files.catbox.moe/sw4xmk.jpg', 'https://files.catbox.moe/rpb0hg.jpg', 
+              'https://files.catbox.moe/86ki3o.jpg', 'https://files.catbox.moe/0uellg.jpg', 
+              'https://files.catbox.moe/alaiwh.jpg', 'https://files.catbox.moe/tb1wai.jpg', 
+              'https://files.catbox.moe/5uuhrm.jpg', 'https://files.catbox.moe/9m8rib.jpg', 
+              'https://files.catbox.moe/pbdchs.jpg', 'https://files.catbox.moe/hadfto.jpg', 
+              'https://files.catbox.moe/h01p3w.jpg', 'https://files.catbox.moe/9usv9j.jpg', 
+              'https://files.catbox.moe/zdxqam.jpg', 'https://files.catbox.moe/80wzyc.jpg', 
+              'https://files.catbox.moe/dpmt4i.png', 'https://files.catbox.moe/mgvpiq.jpeg', 
+              'https://i.imgur.com/lrzYND8.gif', 'https://i.imgur.com/EOPSC40.gif', 
+              'https://i.imgur.com/5eC9EwH.jpeg', 'https://i.imgur.com/T8h5rth.jpeg', 
+              'https://i.imgur.com/6jORwgo.jpeg', 'https://i.imgur.com/eNkAOlh.jpeg', 
+              'https://i.imgur.com/ORd0zAK.jpeg', 'https://i.imgur.com/TlXH6Eg.jpeg', 
+              'https://i.imgur.com/t3QROwT.jpeg', 'https://i.imgur.com/1TRz8ev.jpeg', 
+              'https://i.imgur.com/EXKjdYT.jpeg', 'https://i.imgur.com/PhsySux.jpeg', 
+              'https://i.imgur.com/waeAGWD.jpeg', 'https://i.imgur.com/DLbR02D.jpeg', 
+              'https://i.imgur.com/4c7pi9B.jpeg', 'https://i.imgur.com/8LxrdzT.jpeg', 
+              'https://i.imgur.com/Bsce9bI.jpeg', 'https://i.imgur.com/41vzGJJ.jpeg', 
+              'https://i.imgur.com/fPBmoMM.jpeg', 'https://i.imgur.com/Yd63DS6.jpeg', 
+              'https://i.imgur.com/hLJQ76Z.jpeg', 'https://i.imgur.com/XwWNMw1.jpeg', 
+              'https://i.imgur.com/8Sk1K5W.jpeg', 'https://i.imgur.com/CHZWRgU.jpeg', 
+              'https://i.imgur.com/kIboV81.jpeg', 'https://i.imgur.com/eLQxSoM.jpeg', 
+              'https://i.imgur.com/QUBZx2E.jpeg', 'https://i.imgur.com/fn8S9xL.jpeg', 
+              'http://i.imgur.com/YUi4AEy.jpg', 'https://i.imgur.com/0J7Xz8y.jpeg', 
+              'https://i.imgur.com/ICDqDQW.jpeg', 'https://i.imgur.com/KnJbVGt.jpeg', 
+              'https://i.imgur.com/LCuG9UY.jpeg', 'https://i.imgur.com/LLn63HN.jpeg', 
+              'https://i.imgur.com/NNyA3Im.jpeg', 'https://i.imgur.com/qWGjauP.jpeg', 
+              'https://i.imgur.com/odriJEX.jpeg', 'https://i.imgur.com/msDYY0t.jpeg', 
+              'https://i.imgur.com/o3n3BM8.jpeg', 
               ]
 
 def get_driver():
@@ -365,34 +408,37 @@ def get_driver():
 
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36", "Cookie": "over18=1"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+        "Cookie": "over18=1"
+    }
     response_ptt = requests.get(url, headers=headers)
     if response_ptt.status_code == 200:
         soup = BeautifulSoup(response_ptt.text, "html.parser")
         article = soup.find_all("div", class_="r-ent")
-        response_ptt = ""
+        result = ""
         for a in article:
             title = a.find("div", class_="title")
             if title and title.a:
-                title = title.a.text.strip()  # Strip whitespace
+                title_text = title.a.text.strip()
             else:
-                title = "找不到"
-
+                title_text = "找不到"
+            
             popular = a.find("div", class_="nrec")
             if popular and popular.span:
-                popular = popular.span.text.strip()  # Strip whitespace
+                popular_text = popular.span.text.strip()
             else:
-                popular = "無"
+                popular_text = "無"
 
             date = a.find("div", class_="date")
             if date:
-                date = date.text.strip()  # Strip whitespace
+                date_text = date.text.strip()
             else:
-                date = "無"
+                date_text = "無"
 
-            response_ptt += f"{title} \n 人氣: {popular} \n 日期:{date}\n"
+            result += f"{title_text} \n人氣: {popular_text} \n日期: {date_text}\n\n"
 
-        return response_ptt
+        return result
     else:
         return "無法取得 PTT 文章"
 
@@ -478,6 +524,7 @@ def stock_main(command):
         duration, code = parts
         return plot_trend(code, duration)
 
+#天氣
 def weather(address):
     # 定義一個內部輔助函數，用於發送 API 請求並返回 JSON 數據
     def get_api_data(url):
