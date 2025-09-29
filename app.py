@@ -165,6 +165,23 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
                     }
 
+go_list = ["警察根本不在乎你去不去",
+           "不來最好啊",
+           "就不要去啊",
+           "還是去啊",
+           "你去不去確實會被拘啊",
+           "你不要去就不要報案啊",
+           "警察根本不在乎你要不要去",
+           "就不去阿",
+           "不爽就不要去阿",
+           "不然案件都不要弄了啊",
+           "最好要去",
+           "根本沒人在乎你要不要去",
+           "不去就不去啊",
+           "不爽去就不要去啊",
+           "不去就不去啊！",
+           "可以不去"
+            ]
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
               'https://i.imgur.com/c0foSQj.jpeg', 'https://i.imgur.com/BLYnTMq.jpeg', 
               'https://i.imgur.com/9Ykkrxc.jpeg', 'https://i.imgur.com/sdPGFB7.jpeg', 
@@ -731,6 +748,8 @@ def handle_message(event):
             response = scrape_utaipei_news()
         elif re.match("笑cc", message):
             response = Departmental_website()
+        elif re.search("去", message):
+            response = random.choice(go_list)
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
