@@ -80,10 +80,15 @@ def callback():
 
 keyword_responses = {"你是誰": "我是煒仔啦",
                     "ㄟ": "ㄟ",
+                    "駕照": "😆",
+                    "bar": "粑",
                     "有喔": "有喔",
                     "豪巴": "豪巴",
                     "小炮": "小炮",
                     "賀。": "賀。",
+                    "不懂": "不董",
+                    "我懂": "我董",
+                    "獵豹": "癡漢",
                     "哈": "哈哈哈",
                     "小沈": "1500",
                     "小英": "1450",
@@ -92,7 +97,9 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "小歐": "小歐滾",
                     "唐董": "唐董滾",
                     "海膽": "臭臭的",
+                    "好玩的": "乙烯",
                     "氧的弟弟": "硫",
+                    "博文家": "失火了",
                     "幹擾": "interfere",
                     "啊~": "好舒服啊",
                     "整人嗎": "整人嗎",
@@ -100,7 +107,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "很玄": "這就很玄囉",
                     "可憐": "你好可憐喔",
                     "煒仔": "我是佑哥啦",
-                    "佑哥": "領域展開",
+                    "佑哥": "sheehan",
                     "車號": "9796-MP",                    
                     "ok": "好來我們開始",
                     "備胎": "你有備胎嗎",
@@ -123,6 +130,8 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "哇靠": "哇靠!你還真會掰啊",
                     "五年級小男生": "0937092027",
                     "一哥": "邏輯思考 x 有一說一",
+                    "牙醫": "中山醫牙科他X的超級爛 別去",
+                    "北車": "台北車站台鐵售票人票爆幹爛!",
                     "最後一搏": "cc 剛才去買雨鞋，潦落去了！",
                     "仇": "不要以為我們台灣人都是客客氣氣的",
                     "速速": "速速交來，不然七星劍要劈過去了",
@@ -162,7 +171,9 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "實驗室": ImageSendMessage(original_content_url="https://i.imgur.com/6evqzM0.jpeg", preview_image_url="https://i.imgur.com/6evqzM0.jpeg"),
                     "尤加利葉": ImageSendMessage(original_content_url="https://i.imgur.com/inOep1X.jpeg", preview_image_url="https://i.imgur.com/inOep1X.jpeg"),
                     "小碗": ImageSendMessage(original_content_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw", preview_image_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw"),
-                    "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
+                    "不要呼攏老師": ImageSendMessage(original_content_url="https://i.meee.com.tw/kNnvGkW.jpg", preview_image_url="https://i.meee.com.tw/kNnvGkW.jpg"),
+                    "太少": ImageSendMessage(original_content_url="https://i.meee.com.tw/wj53YXo.jpg", preview_image_url="https://i.meee.com.tw/wj53YXo.jpg"),
+                    "太多": ImageSendMessage(original_content_url="https://i.meee.com.tw/gE4th4O.jpg", preview_image_url="https://i.meee.com.tw/gE4th4O.jpg"),
                     }
 
 go_list = ["警察根本不在乎你去不去",
@@ -716,7 +727,7 @@ def handle_message(event):
             response = reply
             break
     if not response:
-        if re.match("抽", message):
+        if re.search("抽", message):
             img_url = random.choice(image_list)
             response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
         # elif re.match("jable", message):
@@ -748,7 +759,7 @@ def handle_message(event):
             response = scrape_utaipei_news()
         elif re.match("笑cc", message):
             response = Departmental_website()
-        elif re.search("去", message):
+        elif re.match("去", message):
             response = random.choice(go_list)
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
