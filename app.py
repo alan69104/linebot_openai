@@ -761,6 +761,8 @@ def handle_message(event):
             response = Departmental_website()
         elif re.match("去", message):
             response = random.choice(go_list)
+        elif re.search("呃", message):
+            response = "呃呃呃呃呃"
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
