@@ -554,76 +554,103 @@ def stock_main(command):
 
 #天氣
 def weather(address):
-    # 定義一個內部輔助函數，用於發送 API 請求並返回 JSON 數據
-    def get_api_data(url):
-        req = requests.get(url)
-        return req.json()
-
-    # API 授權碼，用於所有的 API 請求
-    code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE'
+    # 建議將 API Key 放到環境變數，這裡先照你的習慣寫入
+    # CWA_API_KEY = os.environ.get('CWA_API_KEY', '你的API_KEY')
+    code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE' 
     
-    # 獲取當前天氣數據
-    # 這部分合併了原本的 get_current_weather 函數的功能
+    # 1. 獲取當前天氣觀測數據 (溫度、濕度、風速)
     current_weather_urls = [
         f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization={code}',
         f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization={code}'
     ]
-    current_weather = {}
+    
+    current_weather_data = {} 
+    
     for url in current_weather_urls:
-        data = get_api_data(url)
-        for station in data['records']['Station']:
-            area = station['GeoInfo']['TownName']
-            if area not in current_weather:
-                current_weather[area] = {
+        try:
+            # 設定 timeout 防止卡死
+            req = requests.get(url, timeout=5)
+            if req.status_code != 200: continue
+            data = req.json()
+            
+            if 'records' not in data or 'Station' not in data['records']: continue
+
+            for station in data['records']['Station']:
+                if 'GeoInfo' not in station: continue
+                
+                town = station['GeoInfo']['TownName']
+                if not town: continue
+                
+                # 建立資料索引，解決同名鄉鎮問題通常需要配合縣市，但這裡先維持簡單邏輯
+                current_weather_data[town] = {
                     'weather': station['WeatherElement'].get('Weather', 'N/A'),
                     'temp': station['WeatherElement'].get('AirTemperature', 'N/A'),
                     'humid': station['WeatherElement'].get('RelativeHumidity', 'N/A'),
                     'WindSpeed': station['WeatherElement'].get('WindSpeed', 'N/A')
                 }
+        except Exception as e:
+            print(f"觀測資料讀取錯誤: {e}")
+            continue
 
-    # 獲取降雨機率預報
-    # 這部分合併了原本的 get_all_forecasts 函數的功能
-    api_list = {
-        "宜蘭縣":"F-D0047-001","桃園市":"F-D0047-005","新竹縣":"F-D0047-009","苗栗縣":"F-D0047-013",
-        "彰化縣":"F-D0047-017","南投縣":"F-D0047-021","雲林縣":"F-D0047-025","嘉義縣":"F-D0047-029",
-        "屏東縣":"F-D0047-033","臺東縣":"F-D0047-037","花蓮縣":"F-D0047-041","澎湖縣":"F-D0047-045",
-        "基隆市":"F-D0047-049","新竹市":"F-D0047-053","嘉義市":"F-D0047-057","臺北市":"F-D0047-061",
-        "高雄市":"F-D0047-065","新北市":"F-D0047-069","臺中市":"F-D0047-073","臺南市":"F-D0047-077",
-        "連江縣":"F-D0047-081","金門縣":"F-D0047-085"
-    }
+    # 2. 獲取降雨機率 (全台鄉鎮預報 F-D0047-093)
+    # 呼叫一次 API 即可取得全台灣資料
+    forecast_url = f"https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-D0047-093?Authorization={code}&elementName=PoP12h"
     
-    # 計算時間範圍（當前時間到3小時後）
-    t = time.time()
-    t1 = t + 10800  # 10800 秒 = 3 小時
-    now = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(t))
-    now2 = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime(t1))
-    
-    precipitation_forecast = {}
-    for city, city_id in api_list.items():
-        url = f'https://opendata.cwa.gov.tw/api/v1/rest/datastore/{city_id}?Authorization={code}&elementName=PoP6h&timeFrom={now}&timeTo={now2}'
-        data = get_api_data(url)
-        for location in data['records']['locations'][0]['location']:
-            area = location['locationName']
-            for element in location['weatherElement']:
-                if element['elementName'] == 'PoP6h':
-                    if element['time']:
-                        precipitation_forecast[area] = element['time'][0]['elementValue'][0]['value']
-                    else:
-                        precipitation_forecast[area] = "N/A"
+    precipitation_map = {} # { "鄉鎮名": "降雨機率" }
 
-    # 合併數據並返回預報結果
-    # 這部分結合了原本 combined_weather_forecast 函數的邏輯
-    for area, weather_data in current_weather.items():
-        if address in area:
-            weather = weather_data['weather']
-            temp = weather_data['temp']
-            humid = weather_data['humid']
-            wind_speed = weather_data['WindSpeed']
-            precipitation = precipitation_forecast.get(area, "N/A")
-            ouput = f'「{address}」的天氣狀況「{weather}」，溫度 {temp} 度，相對濕度 {humid}%，風速{wind_speed}m/s，降雨機率{precipitation}%'
-            return ouput
-    ouput = f"找不到 「{address} 」的天氣預報資料"
-    return ouput
+    try:
+        req = requests.get(forecast_url, timeout=10)
+        if req.status_code == 200:
+            data = req.json()
+            if 'records' in data and 'locations' in data['records']:
+                counties = data['records']['locations'][0]['location']
+                # 雙層迴圈解析：縣市 -> 鄉鎮
+                for county in counties:
+                    townships = county.get('location', [])
+                    for town in townships:
+                        town_name = town['locationName']
+                        pop_value = "N/A"
+                        weather_elements = town.get('weatherElement', [])
+                        for element in weather_elements:
+                            if element['elementName'] == 'PoP12h':
+                                if element['time']:
+                                    # 取第一筆預報 (最近的未來)
+                                    pop_value = element['time'][0]['elementValue'][0]['value']
+                                break
+                        precipitation_map[town_name] = pop_value
+    except Exception as e:
+        print(f"預報資料讀取錯誤: {e}")
+
+    # 3. 匹配與回傳結果
+    target_data = None
+    found_name = ""
+    
+    # 搜尋邏輯：先找觀測資料
+    if address in current_weather_data:
+        target_data = current_weather_data[address]
+        found_name = address
+    else:
+        # 模糊搜尋 (例如輸入"蘆洲" -> 找到"蘆洲區")
+        for name, data in current_weather_data.items():
+            if address in name:
+                target_data = data
+                found_name = name
+                break
+    
+    if target_data:
+        weather_desc = target_data['weather']
+        temp = target_data['temp']
+        humid = target_data['humid']
+        wind = target_data['WindSpeed']
+        
+        # 嘗試取得降雨機率
+        rain_prob = precipitation_map.get(found_name, "N/A")
+        if rain_prob == "N/A":
+             rain_prob = precipitation_map.get(address, "N/A")
+
+        return f'「{found_name}」目前天氣「{weather_desc}」，氣溫 {temp}°C，濕度 {humid}%，風速 {wind}m/s，降雨機率 {rain_prob}%'
+    else:
+        return f"找不到「{address}」的氣象資料，請確認輸入完整的鄉鎮市區名稱（例如：佑哥區）。"
 
 #地震資訊
 def earthquake():
