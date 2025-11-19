@@ -759,7 +759,7 @@ def handle_message(event):
             response = scrape_utaipei_news()
         elif re.match("笑cc", message):
             response = Departmental_website()
-        elif re.match("去", message):
+        elif re.match("去嗎", message):
             response = random.choice(go_list)
         elif re.search("呃", message):
             response = "呃呃呃呃呃"
