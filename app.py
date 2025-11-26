@@ -137,7 +137,9 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "速速": "速速交來，不然七星劍要劈過去了",
                     "生日快樂": "Yo~Yo~ 老大生日大快樂啊！！",
                     "騙子": "一群詐騙份子，你們遲早會滅亡在東南亞!",
-                    "八位小朋友": "https://www.youtube.com/watch?v=azT-0sE4UfI",  
+                    "八位小朋友": "https://www.youtube.com/watch?v=azT-0sE4UfI", 
+                    "不拍就不拍啊":"https://www.dcard.tw/f/utaipei/p/260286905" ,
+                    "印度神曲": "https://youtu.be/eM8Mjuq4MwQ?si=kYgSMqRdYNGNvgaE",
                     "搶頭香": "cc 搶頭香，教報告了。先繳初稿忙完國科會計畫再來繳正式版。",                  
                     "肌肉型態": "文甫你好，關於分組的事情中午我已經用信箱email給你，可能需要麻煩你看一下。",
                     "讀書會": "今天有讀書會喔! \n 地點:S104 \n 時間:17:00-19:00 \n 系學會成員一樣有專屬小點心!",
@@ -152,7 +154,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "超派": StickerSendMessage(package_id="789", sticker_id="10885"),
                     "黃色小鴨": ImageSendMessage(original_content_url="https://i.imgur.com/td883jO.jpeg", preview_image_url="https://i.imgur.com/td883jO.jpeg"),
                     "行事曆": ImageSendMessage(original_content_url="https://i.meee.com.tw/z1xRcQG.jpg", preview_image_url="https://i.meee.com.tw/z1xRcQG.jpg"),
-                    "吼": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
+                    "雲豹": ImageSendMessage(original_content_url="https://i.imgur.com/vy670dJ.jpg", preview_image_url="https://i.imgur.com/vy670dJ.jpg"),
                     "天意": ImageSendMessage(original_content_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd", preview_image_url="https://s.yimg.com/ny/api/res/1.2/VAx4xb76m28_GmqE9cuhaw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://media.zenfs.com/ko/news_ttv_com_tw_433/f273a5380639108f8af906a33a9d4fcd"),
                     "侯侯": ImageSendMessage(original_content_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg", preview_image_url="https://cc.tvbs.com.tw/img/upload/2023/12/26/20231226181119-db1a2fd9.jpg"),
                     "垃圾": ImageSendMessage(original_content_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg", preview_image_url="https://image.taisounds.com/newsimages/img/2023/0629/20230629125144.jpg"),
@@ -173,7 +175,13 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "小碗": ImageSendMessage(original_content_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw", preview_image_url="https://lh3.googleusercontent.com/gps-cs-s/AC9h4nqM1icOnJAdwAMAVvMk2moDr_6RLlj386JW8fvrhnIUGguLHK4-X2zIquOoqryuLMNu9Xk9jSNBZW0j63D--qodQv_jKD4O4RLuRUJufTyJM4Qrdrwol6iEYBuXkq7zBi_bu1_P=s1360-w1360-h1020-rw"),
                     "不要呼攏老師": ImageSendMessage(original_content_url="https://i.meee.com.tw/kNnvGkW.jpg", preview_image_url="https://i.meee.com.tw/kNnvGkW.jpg"),
                     "太少": ImageSendMessage(original_content_url="https://i.meee.com.tw/wj53YXo.jpg", preview_image_url="https://i.meee.com.tw/wj53YXo.jpg"),
-                    "太多": ImageSendMessage(original_content_url="https://i.meee.com.tw/gE4th4O.jpg", preview_image_url="https://i.meee.com.tw/gE4th4O.jpg"),
+                    "坐在那邊": ImageSendMessage(original_content_url="https://i.meee.com.tw/e7S92tV.jpg", preview_image_url="https://i.meee.com.tw/e7S92tV.jpg"),
+                    "實驗衣": ImageSendMessage(original_content_url="https://i.meee.com.tw/O213hvU.jpg", preview_image_url="https://i.meee.com.tw/O213hvU.jpg"),
+                    "作弊阿伯": ImageSendMessage(original_content_url="https://i.meee.com.tw/PffEtwK.jpg", preview_image_url="https://i.meee.com.tw/PffEtwK.jpg"),
+                    "還在等": ImageSendMessage(original_content_url="https://i.meee.com.tw/YJBqmrD.jpg", preview_image_url="https://i.meee.com.tw/YJBqmrD.jpg"),
+                    "迷你鬆餅": ImageSendMessage(original_content_url="https://i.meee.com.tw/eC8ieny.jpg", preview_image_url="https://i.meee.com.tw/eC8ieny.jpg"),
+                    "小吼": ImageSendMessage(original_content_url="https://i.meee.com.tw/0DsQ3ru.jpg", preview_image_url="https://i.meee.com.tw/0DsQ3ru.jpg"),
+                    "藍色自動傘": ImageSendMessage(original_content_url="https://i.meee.com.tw/6KiGUdi.jpg", preview_image_url="https://i.meee.com.tw/6KiGUdi.jpg"),
                     }
 
 go_list = ["警察根本不在乎你去不去",
@@ -394,6 +402,18 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/o3n3BM8.jpeg', 
               ]
 
+ho_list = ['https://i.meee.com.tw/j4L7fv7.jpg', 'https://i.meee.com.tw/PKXkloH.jpg',
+           'https://i.meee.com.tw/kL7BLBN.jpg', 'https://i.meee.com.tw/pe8pjQK.jpg',
+           'https://i.meee.com.tw/I3lidV2.jpg', 'https://i.meee.com.tw/0b00aPn.jpg',
+           'https://i.meee.com.tw/AHRQWZ5.jpg', 'https://i.meee.com.tw/2NFFKPB.jpg',
+           'https://i.meee.com.tw/8GRoLAk.jpg', 'https://i.meee.com.tw/RFUGt1y.jpg',
+           'https://i.meee.com.tw/Wf7b7TA.jpg', 'https://i.meee.com.tw/4gbhngn.jpg',
+           'https://i.imgur.com/vy670dJ.jpg'
+        ]
+
+forestfire_list = ['https://i.meee.com.tw/KI1m9bW.jpg', 'https://i.meee.com.tw/WIimNLH.jpg',
+                   'https://i.meee.com.tw/IkGpi8d.jpg', 'https://i.meee.com.tw/42wjoU7.jpg',
+        ]
 def get_driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features=AutomationControlled")
@@ -554,6 +574,13 @@ def stock_main(command):
 
 #天氣
 def weather(address):
+    # ★★★ 彩蛋：佑哥區 ★★★
+    if address == "佑哥區":
+        return ImageSendMessage(
+            original_content_url="https://i.meee.com.tw/6GEFRdH.jpg", 
+            preview_image_url="https://i.meee.com.tw/6GEFRdH.jpg"
+        )
+
     # 建議將 API Key 放到環境變數，這裡先照你的習慣寫入
     # CWA_API_KEY = os.environ.get('CWA_API_KEY', '你的API_KEY')
     code = 'CWA-3EFEACCD-9F99-4C6F-88DB-1DE133DD4CAE' 
@@ -650,7 +677,7 @@ def weather(address):
 
         return f'「{found_name}」目前天氣「{weather_desc}」，氣溫 {temp}°C，濕度 {humid}%，風速 {wind}m/s，降雨機率 {rain_prob}%'
     else:
-        return f"找不到「{address}」的氣象資料，請確認輸入完整的鄉鎮市區名稱（例如：佑哥區）。"
+        return f"找不到「{address}」的氣象資料，請確認輸入完整的鄉鎮市區名稱（例如：煒仔區）。"
 
 #地震資訊
 def earthquake():
@@ -790,6 +817,10 @@ def handle_message(event):
             response = random.choice(go_list)
         elif re.search("呃", message):
             response = "呃呃呃呃呃"
+        elif re.match("吼", message):
+            response = random.choice(ho_list)
+        elif re.match("森林火災", message):
+            response = random.choice(forestfire_list)
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
