@@ -182,6 +182,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "迷你鬆餅": ImageSendMessage(original_content_url="https://i.meee.com.tw/eC8ieny.jpg", preview_image_url="https://i.meee.com.tw/eC8ieny.jpg"),
                     "小吼": ImageSendMessage(original_content_url="https://i.meee.com.tw/0DsQ3ru.jpg", preview_image_url="https://i.meee.com.tw/0DsQ3ru.jpg"),
                     "藍色自動傘": ImageSendMessage(original_content_url="https://i.meee.com.tw/6KiGUdi.jpg", preview_image_url="https://i.meee.com.tw/6KiGUdi.jpg"),
+                    "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
                     }
 
 go_list = ["警察根本不在乎你去不去",
