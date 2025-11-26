@@ -818,9 +818,11 @@ def handle_message(event):
         elif re.search("呃", message):
             response = "呃呃呃呃呃"
         elif re.match("吼", message):
-            response = random.choice(ho_list)
+            img_url = random.choice(ho_list)
+            response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
         elif re.match("森林火災", message):
-            response = random.choice(forestfire_list)
+            img_url = random.choice(forestfire_list)
+            response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
     # 如果 response 不是 None，則表示找到了相符的回覆
     if response:
         if isinstance(response, str):
