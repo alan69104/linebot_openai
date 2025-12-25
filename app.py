@@ -420,45 +420,45 @@ ho_list = ['https://i.meee.com.tw/j4L7fv7.jpg', 'https://i.meee.com.tw/PKXkloH.j
 forestfire_list = ['https://i.meee.com.tw/KI1m9bW.jpg', 'https://i.meee.com.tw/WIimNLH.jpg',
                    'https://i.meee.com.tw/IkGpi8d.jpg', 'https://i.meee.com.tw/42wjoU7.jpg',
         ]
-def get_driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--window-size=1920,1080")
-    options.add_argument("--start-maximized")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--headless")
-    driver = webdriver.Chrome(options=options)
-    return driver
+# def get_driver():
+#     options = webdriver.ChromeOptions()
+#     options.add_argument("--disable-blink-features=AutomationControlled")
+#     options.add_argument("--window-size=1920,1080")
+#     options.add_argument("--start-maximized")
+#     options.add_argument("--no-sandbox")
+#     options.add_argument("--disable-dev-shm-usage")
+#     options.add_argument("--headless")
+#     driver = webdriver.Chrome(options=options)
+#     return driver
 
-# def jable():
-    driver = get_driver()
-    driver.get("https://jable.tv/")
-    WebDriverWait(driver, 10).until(
-    EC.presence_of_all_elements_located((By.CLASS_NAME, "title"))
-    )
-    driver.execute_script("window.scrollTo(0,document.bodyscrollHeight);")
-    time.sleep(1)
-    titles = driver.find_elements(By.CLASS_NAME, "title")
-    i = 1
-    latest_videos = []
-    popular_videos = []
-    watching_now_videos = []
-    for title in titles:
-        if "-" in title.text:
-            if i <= 6:
-                latest_videos.append(title.text)
-                i += 1
-            elif i <= 17:
-                popular_videos.append(title.text)
-                i += 1
-            else:
-                watching_now_videos.append(title.text)
-    driver.quit()
-    jable_title = "最新影片:\n" + "\n".join(latest_videos) + "\n\n" + \
-          "熱門影片:\n" + "\n".join(popular_videos) + "\n\n" + \
-          "他們在看:\n" + "\n".join(watching_now_videos)
-    return jable_title
+# # def jable():
+#     driver = get_driver()
+#     driver.get("https://jable.tv/")
+#     WebDriverWait(driver, 10).until(
+#     EC.presence_of_all_elements_located((By.CLASS_NAME, "title"))
+#     )
+#     driver.execute_script("window.scrollTo(0,document.bodyscrollHeight);")
+#     time.sleep(1)
+#     titles = driver.find_elements(By.CLASS_NAME, "title")
+#     i = 1
+#     latest_videos = []
+#     popular_videos = []
+#     watching_now_videos = []
+#     for title in titles:
+#         if "-" in title.text:
+#             if i <= 6:
+#                 latest_videos.append(title.text)
+#                 i += 1
+#             elif i <= 17:
+#                 popular_videos.append(title.text)
+#                 i += 1
+#             else:
+#                 watching_now_videos.append(title.text)
+#     driver.quit()
+#     jable_title = "最新影片:\n" + "\n".join(latest_videos) + "\n\n" + \
+#           "熱門影片:\n" + "\n".join(popular_videos) + "\n\n" + \
+#           "他們在看:\n" + "\n".join(watching_now_videos)
+#     return jable_title
 
 def ptt(index):
     url = f"https://www.ptt.cc/bbs/{index}/index.html"
@@ -514,15 +514,15 @@ def plot_stock_trend(code):
         print(f"即時資料錯誤: {e}")
         return TextSendMessage(text="即時股價讀取失敗")
 
-    # --- 2. 抓取歷史資料 (yfinance, 鎖定半年) ---
+    # --- 2. 抓取歷史資料 (yfinance, 鎖定一個月) ---
     try:
         yf_code = f"{code}.TW"
-        df = yf.download(yf_code, period="3mo", auto_adjust=True, progress=False)
+        df = yf.download(yf_code, period="1mo", auto_adjust=True, progress=False)
         
         # 如果上市抓不到，試試看上櫃 (.TWO)
         if df.empty:
             yf_code = f"{code}.TWO"
-            df = yf.download(yf_code, period="3mo", auto_adjust=True, progress=False)
+            df = yf.download(yf_code, period="1mo", auto_adjust=True, progress=False)
             
         if df.empty:
             return TextSendMessage(text="無法獲取歷史股價資料 (Yahoo Finance)")
