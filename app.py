@@ -6,6 +6,8 @@ import logging
 import requests
 import threading
 import twstock
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 from datetime import datetime, timedelta
@@ -18,14 +20,10 @@ from imgurpython import ImgurClient
 import re
 import random
 from flask import Flask, request, abort, render_template
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
+from linebot import (LineBotApi, WebhookHandler)
+from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
-
+import yfinance as yf
 
 app = Flask(__name__, template_folder='templates')
 logging.basicConfig(level=logging.ERROR)
@@ -90,6 +88,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "我懂": "我董",
                     "獵豹": "癡漢",
                     "哈": "哈哈哈",
+                    "認同":"認同+1",
                     "小沈": "1500",
                     "小英": "1450",
                     "謝國樑": "200",
@@ -98,6 +97,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "唐董": "唐董滾",
                     "海膽": "臭臭的",
                     "好玩的": "乙烯",
+                    "博文": "powen",
                     "氧的弟弟": "硫",
                     "博文家": "失火了",
                     "幹擾": "interfere",
@@ -185,22 +185,18 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
                     }
 
-go_list = ["警察根本不在乎你去不去",
-           "不來最好啊",
-           "就不要去啊",
-           "還是去啊",
-           "你去不去確實會被拘啊",
-           "你不要去就不要報案啊",
-           "警察根本不在乎你要不要去",
-           "就不去阿",
-           "不爽就不要去阿",
-           "不然案件都不要弄了啊",
-           "最好要去",
-           "根本沒人在乎你要不要去",
-           "不去就不去啊",
-           "不爽去就不要去啊",
-           "不去就不去啊！",
-           "可以不去"
+go_list = ["警察根本不在乎你去不去","不來最好啊","就不要去啊",
+           "還是去啊","你去不去確實會被拘啊","你不要去就不要報案啊",
+           "警察根本不在乎你要不要去","就不去阿","不爽就不要去阿",
+           "不然案件都不要弄了啊","最好要去","根本沒人在乎你要不要去",
+           "不去就不去啊","不爽去就不要去啊","不去就不去啊！",
+           "可以不去","為何要去","威脅你去","檢察官傳喚你你就得去",
+           "你可以不去","不介意的話可以去","還是會叫你去的",
+           "因為警察的威脅態度就不想去了嗎?","不去做會被拘？",
+           "會去啊！","等老子有空就會去了","建議你還是去一趟",
+           "無故不到的話就會拘提囉","你不去就發公文傳你","不要去啊",
+           "可以無視","你愛來不來","不去做筆錄根本不會被拘提","去了就是共犯"
+
             ]
 image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.jpeg', 
               'https://i.imgur.com/c0foSQj.jpeg', 'https://i.imgur.com/BLYnTMq.jpeg', 
@@ -400,7 +396,16 @@ image_list = ['https://i.imgur.com/Bt6PYE0.jpeg', 'https://i.imgur.com/7ynCsE3.j
               'https://i.imgur.com/LCuG9UY.jpeg', 'https://i.imgur.com/LLn63HN.jpeg', 
               'https://i.imgur.com/NNyA3Im.jpeg', 'https://i.imgur.com/qWGjauP.jpeg', 
               'https://i.imgur.com/odriJEX.jpeg', 'https://i.imgur.com/msDYY0t.jpeg', 
-              'https://i.imgur.com/o3n3BM8.jpeg', 
+              'https://i.imgur.com/o3n3BM8.jpeg', 'https://i.imgur.com/M1QKeiR.jpeg', 
+              'https://i.imgur.com/onH28k9.jpeg', 'https://i.imgur.com/Nmq5Sib.jpeg', 
+              'https://i.imgur.com/gJAJDNK.jpeg', 'https://i.imgur.com/BrMy9gQ.jpeg', 
+              'https://i.imgur.com/7nP7Bsu.jpeg', 'https://i.imgur.com/oO1Ef4Q.jpeg', 
+              'https://i.imgur.com/mUkePgK.jpeg', 'https://i.imgur.com/GomLXCr.jpeg', 
+              'https://i.imgur.com/DCoznkX.jpeg', 'https://i.imgur.com/NopdIVg.jpeg',
+              'https://i.imgur.com/763rfoU.jpeg', 'https://i.imgur.com/n51wobU.jpeg', 
+              'https://i.imgur.com/OPAoXNi.jpeg', 'https://i.imgur.com/zJIJgtV.jpeg', 
+              'https://i.imgur.com/d2HSOef.jpeg', "http://i.imgur.com/n88oEOn.jpg",
+              
               ]
 
 ho_list = ['https://i.meee.com.tw/j4L7fv7.jpg', 'https://i.meee.com.tw/PKXkloH.jpg',
@@ -492,86 +497,114 @@ def ptt(index):
         return "無法取得 PTT 文章"
 
 
-#股票價格
-def get_stock_info(code):
-    stock = twstock.Stock(code)
-    return stock
-
-def get_latest_price(code):
-    stock_rt = twstock.realtime.get(code)
-    if stock_rt['success']:
-        latest_trade_price = stock_rt['realtime']['latest_trade_price']
-        name = stock_rt['info']['name']
-        response_message = f"{name} 最新交易價格: {latest_trade_price}"
-    else:
-        response_message = "無法獲取最新交易價格。"
+# 股票趨勢圖 (yfinance + twstock 混合版)
+def plot_stock_trend(code):
+    # 設定圖片儲存路徑
+    image_path = f"{code}_trend.png"
+    
+    # --- 1. 抓取即時資料 (twstock) ---
+    try:
+        stock_rt = twstock.realtime.get(code)
+        if not stock_rt['success']:
+            return TextSendMessage(text=f"無法獲取 {code} 的即時資料，請確認股號是否正確。")
         
-    return TextSendMessage(text=response_message)
+        stock_name = stock_rt['info']['name'] # 中文名稱
+        latest_price = float(stock_rt['realtime']['latest_trade_price'])
+    except Exception as e:
+        print(f"即時資料錯誤: {e}")
+        return TextSendMessage(text="即時股價讀取失敗")
 
-def plot_trend(code, duration):
-    stock = get_stock_info(code)
-    date_ranges = {'1M': 30, '6M': 180, '1Y': 365, '2Y': 365*2, '5Y': 365*5, '10Y': 365*10}
-    image_messages = []  # 存儲圖片消息的列表
+    # --- 2. 抓取歷史資料 (yfinance, 鎖定半年) ---
+    try:
+        yf_code = f"{code}.TW"
+        df = yf.download(yf_code, period="6mo", auto_adjust=True, progress=False)
+        
+        # 如果上市抓不到，試試看上櫃 (.TWO)
+        if df.empty:
+            yf_code = f"{code}.TWO"
+            df = yf.download(yf_code, period="6mo", auto_adjust=True, progress=False)
+            
+        if df.empty:
+            return TextSendMessage(text="無法獲取歷史股價資料 (Yahoo Finance)")
 
-    if duration not in date_ranges:  
-        print("無法獲取最新交易價格。")
-        return "無法獲取最新交易價格。"
+        # 資料清理
+        df = df.reset_index()
+        # 處理 yfinance 可能的多層索引問題
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
+            
+        df = df[['Date', 'Close']].copy()
+        df.columns = ['date', 'close']
+        df['date'] = df['date'].dt.tz_localize(None) # 移除時區
+        
+    except Exception as e:
+        print(f"歷史資料錯誤: {e}")
+        return TextSendMessage(text="歷史資料讀取發生錯誤")
 
-    num_days = date_ranges[duration]
-
-    # Calculate date range
-    end_date = datetime.today()
-    start_date = end_date - timedelta(days=num_days)
-
-    # Get historical data for the specified date range
-    data = stock.fetch_from(start_date.year, start_date.month)
-
-    # Convert data to DataFrame format
-    df = pd.DataFrame(data)
-
-    # Plot the trend
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.plot(df['date'], df['close'], label='Close Price', color='blue')
-    ax.set_title(f'Stock Price Trend - {duration}')
-    ax.set_xlabel('Date')
-    ax.set_ylabel('Price (TWD)')
-    plt.xticks(rotation=45)
-    ax.legend()
-    ax.grid(True)
-    plt.tight_layout()
-
-    # Save plot to local file
-    image_path = f"{code}_{duration}.png"
-    plt.savefig(image_path, format='png')
-
-    # Upload image to Imgur
-    client_id = 'c0fad094e155b1e'
-    client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
-    client = ImgurClient(client_id, client_secret)
-    image = client.upload_from_path(image_path, anon=True)  # 上傳本地文件
-    url = image['link']
-    image_message = ImageSendMessage(
-        original_content_url=url,
-        preview_image_url=url
-    )
-    image_messages.append(image_message)  # 將圖片消息存儲到列表中
-
-    # Delete local image file
-    os.remove(image_path)
-
-    return image_messages  # 返回圖片消息列表
-
-
-
-
-def stock_main(command):
-    if command.startswith("價格"):
-        code = command[2:]
-        get_latest_price(code)
+    # --- 3. 合併資料 (將最新價格接到歷史資料後面) ---
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    last_hist_date = df.iloc[-1]['date']
+    
+    if last_hist_date < today:
+        new_row = pd.DataFrame({'date': [today], 'close': [latest_price]})
+        df = pd.concat([df, new_row], ignore_index=True)
     else:
-        parts = command.split()
-        duration, code = parts
-        return plot_trend(code, duration)
+        # 如果歷史資料已包含今天，強制更新為即時價格
+        df.iloc[-1, df.columns.get_loc('close')] = latest_price
+
+    # --- 4. 繪圖 (Matplotlib) ---
+    try:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        # 畫走勢線
+        ax.plot(df['date'], df['close'], label='Close Price', color='#1f77b4', linewidth=2)
+        
+        # 標示最新價格紅點
+        last_date = df.iloc[-1]['date']
+        last_val = df.iloc[-1]['close']
+        ax.scatter(last_date, last_val, color='red', s=60, zorder=5)
+        
+        # 標示價格文字
+        ax.annotate(f'{last_val}', 
+                     xy=(last_date, last_val), 
+                     xytext=(5, 5), 
+                     textcoords='offset points',
+                     fontsize=12, color='red', fontweight='bold')
+
+        # 設定標題 (使用英文以避免 Render 伺服器中文亂碼)
+        ax.set_title(f'{code} Stock Trend (6 Months)', fontsize=16)
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Price (TWD)')
+        ax.grid(True, linestyle='--', alpha=0.5)
+        ax.legend()
+        
+        # 旋轉日期標籤
+        fig.autofmt_xdate()
+
+        # 存檔
+        plt.savefig(image_path, format='png')
+        plt.close(fig) # ★★★ 關鍵：釋放記憶體 ★★★
+
+        # --- 5. 上傳到 Imgur ---
+        # 建議改用 os.environ.get('IMGUR_CLIENT_ID')
+        client_id = 'c0fad094e155b1e' 
+        client_secret = '861df13b5b7bf435cc4c27369ee11029ed543f7f'
+        client = ImgurClient(client_id, client_secret)
+        
+        image = client.upload_from_path(image_path, anon=True)
+        os.remove(image_path) # 刪除本地暫存檔
+        
+        url = image['link']
+        
+        # 回傳圖片訊息與文字簡述
+        return [
+            TextSendMessage(text=f"{stock_name} ({code}) \n最新價格: {latest_price}"),
+            ImageSendMessage(original_content_url=url, preview_image_url=url)
+        ]
+
+    except Exception as e:
+        print(f"繪圖或上傳錯誤: {e}")
+        return TextSendMessage(text="圖片生成失敗")
 
 #天氣
 def weather(address):
@@ -793,12 +826,9 @@ def handle_message(event):
         elif re.match("星光閃耀", message):
             video_url = "https://i.imgur.com/WFs8P52.mp4"
             response = VideoSendMessage(original_content_url=video_url, preview_image_url="https://i.imgur.com/SLlr25K.jpg")
-        elif re.match(r"價格(\d+)", message):
-            code = re.match(r"價格(\d+)", message).group(1)
-            response = get_latest_price(code)
-        elif re.match(r"(\d+[DdMmYy])\s+(\d+)", message):
-            duration_code = re.match(r"(\d+[DdMmYy])\s+(\d+)", message).groups()
-            response = stock_main(" ".join(duration_code))
+        elif re.match(r"股票(\d+)", message):
+            code = re.match(r"股票(\d+)", message).group(1)
+            response = plot_stock_trend(code)
         elif re.match("天氣 (.*)", message):
             index = re.match("天氣 (.*)", message).group(1)
             response = weather(index)
@@ -814,7 +844,7 @@ def handle_message(event):
             response = scrape_utaipei_news()
         elif re.match("笑cc", message):
             response = Departmental_website()
-        elif re.match("去嗎", message):
+        elif re.match("^去嗎$", message) or ("去" in message and random.randint(1, 4) == 1):
             response = random.choice(go_list)
         elif re.search("呃", message):
             response = "呃呃呃呃呃"
