@@ -517,12 +517,12 @@ def plot_stock_trend(code):
     # --- 2. 抓取歷史資料 (yfinance, 鎖定半年) ---
     try:
         yf_code = f"{code}.TW"
-        df = yf.download(yf_code, period="6mo", auto_adjust=True, progress=False)
+        df = yf.download(yf_code, period="3mo", auto_adjust=True, progress=False)
         
         # 如果上市抓不到，試試看上櫃 (.TWO)
         if df.empty:
             yf_code = f"{code}.TWO"
-            df = yf.download(yf_code, period="6mo", auto_adjust=True, progress=False)
+            df = yf.download(yf_code, period="3mo", auto_adjust=True, progress=False)
             
         if df.empty:
             return TextSendMessage(text="無法獲取歷史股價資料 (Yahoo Finance)")
