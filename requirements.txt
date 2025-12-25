@@ -1,7 +1,6 @@
 line-bot-sdk
 flask
 gunicorn
-selenium
 BeautifulSoup4
 webdriver-manager
 logger
