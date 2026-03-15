@@ -24,6 +24,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 import yfinance as yf
+import random
 
 app = Flask(__name__, template_folder='templates')
 logging.basicConfig(level=logging.ERROR)
@@ -147,6 +148,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "恕我拒絕": "怒我拒絕，因評估發想，第二組使用方法與我方（第五組）不同，做出的影片內容應不會有高度重複性",
                     "火星": "火星-45°c對我們來說太easy了，我們一進去火星，只要一人發動兩台摩托車就可以把溫度升上來了，所以移民火星還不錯",
                     "名單": "1林幼鎂、2林憶蓁、3王云柔、4沈煒耀、5何續恩、6莊博文、7徐楷茹、8葉宥陞、9陳皓恩、10謝語姍、11周家甫、12林昀誼、13周子堯",
+                    "安靜型態": "📢 小編公告📢\n \n為了讓大家都有良好的休息品質 🌙\n \n社群將於 晚上 22:00 ～ 隔天 09:00 進入安靜時段 ⏰\n \n這段時間內，請避免發送訊息，一起尊重彼此的生活與作息 💕\n \n讓我們共同維護一個 舒適、安心 的社群環境 🌿感謝大家的理解與配合 🙏✨",
                     "青鳥": "我認為現今臺灣早已跟世界脫軌,某些人只知道美國以及視中國,但也不 看清楚現在局勢,早已反轉了,我們既沒有自己的武器供應鏈也沒強大的後勤 也沒有足夠的物資,要如何與未來的超級大國爭,「弱國無外交」就是現今臺灣 面臨的問題,要如何解決臺灣問題已經不太可能了,只能苟者才能維持自己的 地位,期待青鳥不要再丟臉了。",
                     "爆車": "收到，那市立大學這邊我就結算11位囉！\n車子應該會滿載。\n還是很多人報名  我把人數撐到極限  12 人  上次舊生11位  讓出1位  補上2位  真的爆車了  林明聖  陳泓愷  王進欽  黃至韻  林立  林貫益  葉宥陞  黃翊萱（一位）陳品聿  陳佩伶  以上為舊生保障名額  賴芓涵  林幼鎂  以上為新生遞補  真的極限了",
                     "做出口碑了": "明聖  教授 早安 \n 不敢相信！ \n 5/26 大漢溪的活動已經滿車！ \n 您這邊幫我定奪需要幾位助教跟車 \n 我好辦理遞補 \n 42座位大車 \n 目前已經報名逾50位了 \n 我會辦理遞補 \n 感謝教授 \n 我們做出口碑了！ \n  \n 教授早安  \n 這樣好不好 \n 除了明聖教授+陳泓愷助教 \n 教育局幫貴校再保留2名助教參與協助行政工作? \n (總共4位) \n 畢竟這次好不容易招滿 \n 我們不適合辦理太多學生遞補",
@@ -183,6 +185,7 @@ keyword_responses = {"你是誰": "我是煒仔啦",
                     "小吼": ImageSendMessage(original_content_url="https://i.meee.com.tw/0DsQ3ru.jpg", preview_image_url="https://i.meee.com.tw/0DsQ3ru.jpg"),
                     "藍色自動傘": ImageSendMessage(original_content_url="https://i.meee.com.tw/6KiGUdi.jpg", preview_image_url="https://i.meee.com.tw/6KiGUdi.jpg"),
                     "大洪": ImageSendMessage(original_content_url="https://i.meee.com.tw/HpFRxkJ.jpg", preview_image_url="https://i.meee.com.tw/HpFRxkJ.jpg"),
+                    "堯力十足": ImageSendMessage(original_content_url="https://i.meee.com.tw/803uxpc.jpg", preview_image_url="https://i.meee.com.tw/803uxpc.jpg"),
                     }
 
 go_list = ["警察根本不在乎你去不去","不來最好啊","就不要去啊",
@@ -847,7 +850,9 @@ def handle_message(event):
         elif re.match("^去嗎$", message) or ("去" in message and random.randint(1, 4) == 1):
             response = random.choice(go_list)
         elif re.search("呃", message):
-            response = "呃呃呃呃呃"
+            possible_lengths = list(range(1, 8)) + [100]
+            random_length = random.choice(possible_lengths)
+            response = "呃" * random_length
         elif re.match("吼", message):
             img_url = random.choice(ho_list)
             response = ImageSendMessage(original_content_url=img_url, preview_image_url=img_url)
